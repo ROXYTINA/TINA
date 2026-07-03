@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nexus Developer Platform</title>
+  <title>KANHA</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
   <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 
@@ -19,6 +20,22 @@
       font-family: 'JetBrains Mono', monospace;
     }
   </style>
+
+  <!-- 👇 paste this right here, before </head> -->
+  <script>
+    const name = "KANHA";
+    const suffix = " ✦";
+    let i = 0, dir = 1;
+    setInterval(() => {
+      if (!document.hidden) {
+        document.title = name.slice(0, i) + (i === name.length ? suffix : "_");
+        i += dir;
+        if (i > name.length) dir = -1;
+        if (i < 0) { i = 0; dir = 1; }
+      }
+    }, 150);
+  </script>
+
 </head>
 <body class="bg-[#0B0A13]">
 <div id="root"></div>

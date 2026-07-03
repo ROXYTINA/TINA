@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { C } from "../theme";
+import { motion, useScroll, useSpring } from "framer-motion";
 
 const NAV_ITEMS = [
   {
@@ -60,6 +61,13 @@ export default function Sidebar() {
   const [active, setActive] = useState("Home");
   const [tooltip, setTooltip] = useState(null);
 
+  const { scrollYProgress } = useScroll();
+  const scaleY = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
   useEffect(() => {
     const observers = [];
     NAV_ITEMS.forEach(({ id }) => {
@@ -82,7 +90,9 @@ export default function Sidebar() {
   };
 
   return (
-      <div style={{
+      <div 
+          className="sidebar-nav"
+          style={{
         position: "fixed",
         right: 24,
         top: "50%",
@@ -93,17 +103,39 @@ export default function Sidebar() {
         alignItems: "center",
         gap: 0,
       }}>
+        {/* Scroll Progress Indicator */}
+        <motion.div
+            className="scroll-progress-indicator"
+            style={{
+              position: "absolute",
+              right: -10,
+              top: 0,
+              bottom: 0,
+              width: 2,
+              background: `linear-gradient(to bottom, transparent, ${C.pink}, transparent)`,
+              scaleY,
+              transformOrigin: "top",
+              borderRadius: 2,
+              opacity: 0.6
+            }}
+        />
         {NAV_ITEMS.map(({ id, icon }, i) => {
           const isActive = active === id;
           const isFirst = i === 0;
           const isLast = i === NAV_ITEMS.length - 1;
 
           return (
-              <div key={id} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <div 
+                  className="nav-item-container"
+                  key={id} 
+                  style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+              >
 
                 {/* Line above dot (not for first) */}
                 {!isFirst && (
-                    <div style={{
+                    <div 
+                        className="nav-line"
+                        style={{
                       width: 1,
                       height: 28,
                       background: isActive
@@ -117,7 +149,9 @@ export default function Sidebar() {
                 <div style={{ position: "relative" }}>
                   {/* Tooltip */}
                   {tooltip === id && (
-                      <div style={{
+                      <div 
+                          className="tooltip"
+                          style={{
                         position: "absolute",
                         right: "calc(100% + 14px)",
                         top: "50%",
@@ -205,7 +239,9 @@ export default function Sidebar() {
 
                 {/* Line below dot (not for last) */}
                 {!isLast && (
-                    <div style={{
+                    <div 
+                        className="nav-line"
+                        style={{
                       width: 1,
                       height: 28,
                       background: isActive

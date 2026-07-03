@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { C, projects } from "../theme";
 import { SectionHeading } from "./UI";
+import { motion } from "framer-motion";
 
 // Pull the top projects from your local file for the pinned grid section
 const PINNED = projects.slice(0, 5);
@@ -79,19 +80,26 @@ export default function Projects() {
           {/* Outer Dashboard Grid Layout */}
           <div className="projects-grid" style={{
             display: "grid",
-            gridTemplateColumns: "300px 1fr",
+            gridTemplateColumns: "15rem 1fr",
             gap: "2.5rem",
             alignItems: "start"
           }}>
 
             {/* ── Sidebar: Repositories List (Live Streamed) ── */}
-            <div style={{
+            <motion.div 
+                className="projects-repo-list"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false, amount: 0.1 }}
+                transition={{ duration: 0.6 }}
+                style={{
               background: C.surface,
               border: `1px solid ${C.border}`,
               borderRadius: 10,
               display: "flex",
               flexDirection: "column",
               height: "720px",
+                  width: "15rem",
             }}>
 
               {/* Sidebar Header */}
@@ -102,7 +110,7 @@ export default function Projects() {
                 padding: "1rem",
                 borderBottom: `1px solid ${C.border}`,
                 fontFamily: C.mono,
-                fontSize: "0.76rem",
+                fontSize: "0.76rem"
               }}>
 
                 <span style={{
@@ -151,17 +159,24 @@ export default function Projects() {
                     </div>
                 ) : (
                     repos.map((r, i) => (
-                        <a
+                        <motion.a
                             key={i}
                             href={r.url}
                             target="_blank"
                             rel="noopener noreferrer"
+                            whileHover={{ 
+                              x: 5, 
+                              background: "rgba(255,110,180,0.03)",
+                              paddingLeft: "0.5rem"
+                            }}
+                            whileTap={{ scale: 0.98 }}
                             style={{
                               display: "block",
                               textDecoration: "none",
                               padding: "0.75rem 0",
                               borderBottom: i < repos.length - 1 ? `1px solid ${C.border}` : "none",
                               cursor: "pointer",
+                              transition: "background 0.2s ease",
                             }}
                         >
                           <div style={{
@@ -215,14 +230,19 @@ export default function Projects() {
 
                           </div>
 
-                        </a>
+                        </motion.a>
                     ))
                 )}
               </div>
-            </div>
+            </motion.div>
 
             {/* ── Main Content Block: Pinned Compact Grid ── */}
-            <div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
               <div style={{
                 fontFamily: C.mono,
                 fontSize: "0.7rem",
@@ -234,20 +254,37 @@ export default function Projects() {
               </div>
 
               {/* Grid display config scaled down from minmax 360px to 260px for smaller cards */}
-              <div style={{
+              <div 
+                  className="pinned-projects-grid"
+                  style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-                gap: "1rem"
+                gridTemplateColumns: "repeat(2, 1fr)",
+                gap: "1rem",
+                width: "100%",
               }}>
                 {PINNED.map((p, i) => (
-                    <div key={i} style={{
-                      background: C.surface, border: `1px solid ${C.border}`,
-                      borderRadius: 8, padding: "0.9rem",
-                      display: "flex", flexDirection: "column", justifyContent: "space-between",
-                      transition: "border-color 0.2s",
-                    }}
-                         onMouseEnter={e => e.currentTarget.style.borderColor = C.pinkBorder || C.pink}
-                         onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+                    <motion.div 
+                        key={i} 
+                        initial={{ opacity: 0, y: 15 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: false, amount: 0.1 }}
+                        transition={{ duration: 0.4, delay: i * 0.05 }}
+                        whileHover={{ 
+                          y: -5,
+                          scale: 1.02,
+                          boxShadow: "0 10px 30px -15px rgba(255,110,180,0.3)"
+                        }}
+                        whileTap={{ scale: 0.98 }}
+                        style={{
+                          background: C.surface, 
+                          border: `1px solid ${C.border}`,
+                          borderRadius: 8, 
+                          padding: "0.9rem",
+                          display: "flex", 
+                          flexDirection: "column", 
+                          justifyContent: "space-between",
+                          cursor: "pointer"
+                        }}
                     >
                       <div>
                         {/* Card Top Title Row */}
@@ -338,12 +375,18 @@ export default function Projects() {
                         </a>
                         )}
                       </div>
-                    </div>
+                    </motion.div>
                 ))}
               </div>
 
               {/* Bottom Footer Action */}
-              <div style={{ textAlign: "center", marginTop: "1.5rem" }}>
+              <motion.div 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                style={{ textAlign: "center", marginTop: "1.5rem" }}
+              >
                 <a
                     href="https://github.com/ROXYTINA"
                     target="_blank"
@@ -357,8 +400,8 @@ export default function Projects() {
                 >
                   View all repositories →
                 </a>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
           </div>
 

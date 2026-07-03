@@ -1,6 +1,8 @@
 import { useState } from "react";
+import emailjs from "@emailjs/browser";
 import { C } from "../theme";
 import { SectionHeading, Cursor } from "./UI";
+import { motion } from "framer-motion";
 const JSON_LINES = [
   [1, <span style={{ color: "#94a3b8" }}>{"{"}</span>],
 
@@ -83,7 +85,49 @@ const JSON_LINES = [
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [status, setStatus] = useState({ loading: false, success: false, error: null });
+
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.name || !form.email || !form.message) {
+      setStatus({ loading: false, success: false, error: "Please fill all required fields." });
+      return;
+    }
+
+    setStatus({ loading: true, success: false, error: null });
+
+    try {
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error("EmailJS configuration missing in .env");
+      }
+
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          from_name: form.name,
+          from_email: form.email,
+          subject: form.subject,
+          message: form.message,
+          to_email: "kanharoth12345@gmail.com",
+        },
+        publicKey
+      );
+
+      setStatus({ loading: false, success: true, error: null });
+      setForm({ name: "", email: "", subject: "", message: "" });
+      setTimeout(() => setStatus((s) => ({ ...s, success: false })), 5000);
+    } catch (err) {
+      console.error("EmailJS Error:", err);
+      setStatus({ loading: false, success: false, error: err.message || "Failed to send message." });
+    }
+  };
 
   const inputStyle = {
     width: "100%",
@@ -135,34 +179,56 @@ export default function Contact() {
             command="$ ./contact.exe"
         />
 
-        <div style={{
+        <div
+            className="contact-grid"
+            style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-          gap: "2rem"
+          gap: "2rem",
         }}>
 
           {/* ── contact_info.json ── */}
-          <div style={{
-            background: "#080814", border: `1px solid ${C.border}`,
-            borderRadius: 10, overflow: "hidden",
-          }}>
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false, amount: 0.1 }}
+            transition={{ duration: 0.7 }}
+            whileHover={{ y: -5, boxShadow: `0 15px 45px -10px rgba(167,139,250,0.15)` }}
+            whileTap={{ scale: 0.995 }}
+            style={{
+              background: "#080814", border: `1px solid ${C.border}`,
+              borderRadius: 10, overflow: "hidden",
+              transition: "box-shadow 0.4s ease",
+              display: "flex", flexDirection: "column"
+            }}
+          >
             <div style={{
-              background: C.surface, borderBottom: `1px solid ${C.border}`,
-              padding: "0.6rem 1rem", display: "flex", alignItems: "center", gap: 8,
+              background: C.surface,
+                borderBottom: `1px solid ${C.border}`,
+                padding: "0.6rem 1rem",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+
             }}>
               {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
                 <span key={c} style={{ width: 11, height: 11, borderRadius: "50%", background: c, display: "inline-block" }} />
               ))}
               <span style={{
-                marginLeft: "auto", fontFamily: C.mono, fontSize: "0.68rem",
-                color: C.textDim, display: "flex", alignItems: "center", gap: 6,
+                    marginLeft: "auto",
+                    fontFamily: C.mono,
+                    fontSize: "0.68rem",
+                    color: C.textDim,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
               }}>
                 &lt;/&gt; contact_info.json
               </span>
             </div>
             <div style={{ padding: "1.4rem", fontFamily: C.mono, fontSize: "0.78rem", lineHeight: 2.1 }}>
               {JSON_LINES.map(([num, content], i) => (
-                <div key={i} style={{ display: "flex", gap: "1.2rem" }}>
+                <div key={num || `empty-${i}`} style={{ display: "flex", gap: "1.2rem" }}>
                   <span style={{ color: C.textDim, minWidth: 16, textAlign: "right", userSelect: "none" }}>{num}</span>
                   <span>{content}</span>
                 </div>
@@ -172,13 +238,23 @@ export default function Contact() {
                 <Cursor />
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* ── sendMessage.ts ── */}
-          <div style={{
-            background: "#080814", border: `1px solid ${C.border}`,
-            borderRadius: 10, overflow: "hidden",
-          }}>
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false, amount: 0.1 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            whileHover={{ y: -5, boxShadow: `0 15px 45px -10px rgba(255,110,180,0.15)` }}
+            whileTap={{ scale: 0.995 }}
+            style={{
+              background: "#080814", border: `1px solid ${C.border}`,
+              borderRadius: 10, overflow: "hidden",
+              transition: "box-shadow 0.4s ease",
+              display: "flex", flexDirection: "column"
+            }}
+          >
             <div style={{
               background: C.surface, borderBottom: `1px solid ${C.border}`,
               padding: "0.6rem 1rem", display: "flex", alignItems: "center", gap: 8,
@@ -197,10 +273,10 @@ export default function Contact() {
               }} />
             </div>
 
-            <div style={{ padding: "1rem" }}>
+            <div style={{ padding: "1rem", flex: 1, display: "flex", flexDirection: "column" }}>
               <div style={{
                 background: C.surface, border: `1px solid ${C.border}`,
-                borderRadius: 8, padding: "1rem",
+                borderRadius: 8, padding: "1rem", flex: 1, display: "flex", flexDirection: "column"
               }}>
                 {/* meta */}
                 <div style={{
@@ -250,23 +326,47 @@ export default function Contact() {
                   />
                 </div>
 
-                <div style={{ fontFamily: C.mono, fontSize: "0.66rem", color: C.textDim, marginBottom: "0.9rem" }}>
+                <div style={{ fontFamily: C.mono, fontSize: "0.66rem", color: C.textDim, marginBottom: "0.9rem", marginTop: "auto" }}>
                   {"// Protected by spam filters and rate limits"}
                 </div>
 
-                <button style={{
-                  background: `linear-gradient(135deg, ${C.pinkDim}, ${C.pink})`,
-                  border: "none", cursor: "pointer",
+                <button 
+                  onClick={handleSubmit}
+                  disabled={status.loading}
+                  style={{
+                  background: status.loading 
+                    ? C.surface 
+                    : `linear-gradient(135deg, ${C.pinkDim}, ${C.pink})`,
+                  border: "none", 
+                  cursor: status.loading ? "not-allowed" : "pointer",
                   padding: "0.65rem 1.5rem", borderRadius: 6,
                   fontFamily: C.mono, fontSize: "0.76rem",
                   fontWeight: 700, color: "#fff", letterSpacing: "0.1em",
                   display: "flex", alignItems: "center", gap: 8,
+                  opacity: status.loading ? 0.7 : 1,
+                  transition: "all 0.2s ease"
                 }}>
-                  ▶ SEND MESSAGE
+                  {status.loading ? "⌛ SENDING..." : "▶ SEND MESSAGE"}
                 </button>
+
+                {status.success && (
+                  <div style={{ 
+                    marginTop: "1rem", color: "#4ade80", fontFamily: C.mono, fontSize: "0.7rem" 
+                  }}>
+                    ✓ Message sent successfully!
+                  </div>
+                )}
+
+                {status.error && (
+                  <div style={{ 
+                    marginTop: "1rem", color: "#f87171", fontFamily: C.mono, fontSize: "0.7rem" 
+                  }}>
+                    ⚠ Error: {status.error}
+                  </div>
+                )}
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { C } from "../theme";
 import { SectionHeading } from "./UI";
+import { motion } from "framer-motion";
 
 const SKILLS = [
   { name: "React",       color: "#61DAFB", icon: "https://cdn.simpleicons.org/react/61DAFB" },
@@ -210,8 +211,11 @@ function SkillSphere() {
   const meshFaces = getMeshLines();
 
   return (
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div 
+          className="skill-sphere-container"
+          style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
         <div
+            className="skill-sphere-canvas"
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
             onPointerUp={onPointerUp}
@@ -282,10 +286,12 @@ function SkillSphere() {
             const opacity = Math.pow(Math.max(0, normZ), 0.6);
 
             return (
-                <div
+                <motion.div
                     key={name}
                     onMouseEnter={() => isFront && setHovered(name)}
                     onMouseLeave={() => setHovered(null)}
+                    whileHover={isFront ? { scale: 1.15 } : {}}
+                    whileTap={isFront ? { scale: 0.95 } : {}}
                     style={{
                       position: "absolute",
                       left: "50%", top: "50%",
@@ -338,22 +344,27 @@ function SkillSphere() {
                   {name}
                 </span>
                   )}
-                </div>
+                </motion.div>
             );
           })}
         </div>
 
-        <div style={{
-          marginTop: "0.5rem",
-          display: "inline-flex", alignItems: "center", gap: 10,
-          background: "rgba(255,255,255,0.03)",
-          border: `1px solid ${C.border}`,
-          borderRadius: 50, padding: "0.45rem 1.5rem",
-          fontFamily: C.mono, fontSize: "0.74rem", color: C.textMuted,
-        }}>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: false, amount: 0.1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+          style={{
+            marginTop: "0.5rem",
+            display: "inline-flex", alignItems: "center", gap: 10,
+            background: "rgba(255,255,255,0.03)",
+            border: `1px solid ${C.border}`,
+            borderRadius: 50, padding: "0.45rem 1.5rem",
+            fontFamily: C.mono, fontSize: "0.74rem", color: C.textMuted,
+          }}>
           <span style={{ fontSize: "1rem" }}>⊕</span>
           Drag to explore skills universe
-        </div>
+        </motion.div>
       </div>
   );
 }
@@ -361,7 +372,13 @@ function SkillSphere() {
 export default function Skills() {
   return (
       <section style={{ padding: "6rem 3rem", position: "relative", zIndex: 1 }}>
-        <div style={{ maxWidth: 1400, margin: "0 auto" }}>
+        <motion.div 
+          initial={{ scale: 0.8, opacity: 0 }}
+          whileInView={{ scale: 1, opacity: 1 }}
+          viewport={{ once: false, amount: 0.1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+            style={{ maxWidth: 1400, margin: "0 auto" }}
+          >
           <SectionHeading
               icon={
                 <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke={C.pink} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -373,7 +390,7 @@ export default function Skills() {
           />
           <SkillSphere />
 
-        </div>
+        </motion.div>
       </section>
   );
 }

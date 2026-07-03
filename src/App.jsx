@@ -1,5 +1,5 @@
 import GlobalStyle from "./components/GlobalStyle";
-import { GridBg } from "./components/UI";
+import { GridBg, CustomCursor } from "./components/UI";
 import Sidebar from "./components/Sidebar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -13,6 +13,7 @@ export default function App() {
     return (
         <>
             <GlobalStyle />
+            <CustomCursor />
             <GridBg />
             <Sidebar />
 

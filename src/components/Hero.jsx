@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import {C, LAYOUT} from "../theme";
 import { Cursor } from "./UI";
 import { FaGithub } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 
 const FULL_NAME = "Sopheakanha";
@@ -120,9 +121,10 @@ export default function Hero() {
   }, []);
 
   return (
-      <section style={{
+      <section 
+          className="hero-section"
+          style={{
         minHeight: "100vh",
-        paddingTop: 60,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -136,9 +138,11 @@ export default function Hero() {
         zIndex: 1,
       }}>
 
-        <div style={{
+        <div 
+            className="hero-grid"
+            style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+          gridTemplateColumns: "1fr 1fr",
           width: "100%",
           maxWidth: 1200,
           gap: "3rem",
@@ -181,7 +185,13 @@ export default function Hero() {
 
 
         {/* Name */}
-          <h1 style={{
+          <motion.h1 
+              className="hero-name"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              style={{
             fontSize: "3.5rem",
             fontWeight: 800,
             lineHeight: 1.0,
@@ -193,7 +203,9 @@ export default function Hero() {
               Hello, I'm
           <br />
 
-            <span style={{
+            <span 
+                className="hero-name-typed"
+                style={{
               background: `linear-gradient(135deg, ${C.pink}, ${C.white})`,
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
@@ -206,38 +218,53 @@ export default function Hero() {
 
           {typed.length < FULL_NAME.length && <Cursor />}
 
-        </h1>
+        </motion.h1>
 
 
-        <p style={{
-          fontFamily: C.mono,
-          fontSize: "0.88rem",
-          color: C.pink,
-          marginBottom: "0.5rem"
-        }}>
+        <motion.p 
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: false, amount: 0.1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          style={{
+            fontFamily: C.mono,
+            fontSize: "0.88rem",
+            color: C.pink,
+            marginBottom: "0.5rem"
+          }}>
           &lt;Engineer /&gt; Beginner Full Stack Engineer.
-        </p>
+        </motion.p>
 
-        <p style={{
-          color: C.textMuted,
-          lineHeight: 1.75,
-          marginBottom: "2rem",
-          maxWidth: 460,
-          fontSize: "0.93rem"
-        }}>
+        <motion.p 
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: false, amount: 0.1 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          style={{
+            color: C.textMuted,
+            lineHeight: 1.75,
+            marginBottom: "2rem",
+            maxWidth: 460,
+            fontSize: "0.93rem"
+          }}>
           Specializing in designing and building interacted and interesting systems and applications.
           Passionate about creating innovative solutions that push the boundaries of technology and enhance user experiences.
-        </p>
+        </motion.p>
 
 
         {/* Buttons */}
 
-        <div style={{
-          display: "flex",
-          gap: "1rem",
-          marginBottom: "2rem",
-          flexWrap: "wrap"
-        }}>
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.1 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          style={{
+            display: "flex",
+            gap: "1rem",
+            marginBottom: "2rem",
+            flexWrap: "wrap"
+          }}>
 
           {/*<button style={{*/}
           {/*  background: `linear-gradient(135deg, ${C.pinkDim}, ${C.pink})`,*/}
@@ -268,15 +295,20 @@ export default function Hero() {
             Check MY GitHub
           </button>
 
-        </div>
+        </motion.div>
 
         {/* Modules */}
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          flexWrap: "wrap"
-        }}>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: false, amount: 0.1 }}
+          transition={{ duration: 1, delay: 0.6 }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            flexWrap: "wrap"
+          }}>
 
           <span style={{
             fontFamily: C.mono,
@@ -300,13 +332,22 @@ export default function Hero() {
           ))}
 
 
-        </div>
+        </motion.div>
       </div>
 
 
       {/* ── RIGHT — VS Code editor ── */}
-      <div style={{
-        animation: "fadeInUp 1s ease 0.3s both"
+      <motion.div 
+        initial={{ opacity: 0, x: 20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: false, amount: 0.1 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        whileHover={{ 
+          y: -8,
+          boxShadow: `0 20px 80px rgba(255,110,180,0.15)`,
+        }}
+        style={{
+        zIndex: 2
       }}>
 
         <div style={{
@@ -315,6 +356,7 @@ export default function Hero() {
           borderRadius: 10,
           overflow: "hidden",
           boxShadow: `0 0 60px rgba(255,110,180,0.08)`,
+          transition: "box-shadow 0.4s ease",
         }}>
 
           {/* Title bar */}
@@ -430,7 +472,7 @@ export default function Hero() {
 
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   </section>
   );

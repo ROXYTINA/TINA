@@ -1,6 +1,7 @@
 import { C } from "../theme";
 import { SectionHeading, Cursor } from "./UI";
 import profileImg from "../assets/me.JPG";
+import { motion } from "framer-motion";
 
 const STATS = [
   {
@@ -81,16 +82,28 @@ export default function About() {
         }}>
           <SectionHeading icon="▶_" command="# About.system" />
 
-          <div style={{
+          <div 
+              className="about-grid"
+              style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gridTemplateColumns: "1fr 1fr",
             gap: "2rem",
             alignItems: "start"
           }}>
 
               {/* ── Profile card ── */}
-              <div
+              <motion.div
                   className="profile-card"
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: false, amount: 0.1 }}
+                  transition={{ duration: 0.7 }}
+                  whileHover={{ 
+                    y: -5,
+                    borderColor: C.pink,
+                    boxShadow: `0 15px 45px -10px rgba(0, 0, 0, 0.8), 0 0 40px 4px rgba(255, 110, 180, 0.25)`
+                  }}
+                  whileTap={{ scale: 0.99 }}
                   style={{
                       background: "linear-gradient(145deg, #181a20, #111216)",
                       border: `1px solid rgba(255, 110, 180, 0.15)`,
@@ -100,21 +113,7 @@ export default function About() {
                       position: "relative",
                       overflow: "hidden",
                       boxShadow: `0 10px 40px -10px rgba(0, 0, 0, 0.7), 0 0 30px 2px rgba(255, 110, 180, 0.12)`,
-                      transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                  }}
-
-
-                  onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = "translateY(-4px)";
-                      e.currentTarget.style.borderColor = C.pink;
-                      e.currentTarget.style.boxShadow = `0 15px 45px -10px rgba(0, 0, 0, 0.8), 0 0 40px 4px rgba(255, 110, 180, 0.25)`;
-                  }}
-
-
-                  onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = "translateY(0)";
-                      e.currentTarget.style.borderColor = "rgba(255, 110, 180, 0.15)";
-                      e.currentTarget.style.boxShadow = `0 10px 40px -10px rgba(0, 0, 0, 0.7), 0 0 30px 2px rgba(255, 110, 180, 0.12)`;
+                      transition: "border-color 0.4s ease, box-shadow 0.4s ease",
                   }}
               >
                   {/* Decorative Top Accent Line to make it pop */}
@@ -134,26 +133,14 @@ export default function About() {
                           <img
                               src={profileImg}
                               alt="Operator Avatar"
-                              className="avatar-image"
                               style={{
                                   width: 120,
                                   height: 120,
                                   borderRadius: "50%",
                                   border: `2px solid ${C.pink}`,
                                   objectFit: "cover",
-                                  background: "#080814",
-                                  boxShadow: `0 0 25px rgba(255,110,180,0.3)`,
                                   display: "block",
-                                  filter: "grayscale(100%)",
-                                  transition: "filter 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s ease",
-                              }}
-                              onMouseEnter={(e) => {
-                                  e.currentTarget.style.filter = "grayscale(0%)";
-                                  e.currentTarget.style.transform = "scale(1.03)";
-                              }}
-                              onMouseLeave={(e) => {
-                                  e.currentTarget.style.filter = "grayscale(100%)";
-                                  e.currentTarget.style.transform = "scale(1)";
+                                  boxShadow: `0 0 20px rgba(255,110,180,0.4), 0 0 40px rgba(255,110,180,0.15)`,
                               }}
                           />
 
@@ -233,7 +220,7 @@ export default function About() {
                       </div>
                   </div>
 
-              </div>
+              </motion.div>
 
               {/* ── Right column ── */}
               <div style={{
@@ -243,7 +230,17 @@ export default function About() {
               }}>
 
                   {/* Terminal log */}
-                  <div
+                  <motion.div
+                      initial={{ opacity: 0, x: 30 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: false, amount: 0.1 }}
+                      transition={{ duration: 0.7, delay: 0.2 }}
+                      whileHover={{ 
+                        y: -3,
+                        borderColor: "rgba(255, 110, 180, 0.25)",
+                        boxShadow: `0 15px 45px -10px rgba(0, 0, 0, 0.8), 0 0 40px 4px rgba(255, 110, 180, 0.15)`
+                      }}
+                      whileTap={{ scale: 0.995 }}
                       style={{
                           background: "linear-gradient(145deg, #181a20, #111216)",
                           border: `1px solid rgba(255, 110, 180, 0.12)`,
@@ -251,17 +248,7 @@ export default function About() {
                           overflow: "hidden",
                           position: "relative",
                           boxShadow: `0 10px 40px -10px rgba(0, 0, 0, 0.7), 0 0 30px 2px rgba(255, 110, 180, 0.08)`,
-                          transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                      }}
-                      onMouseEnter={(e) => {
-                          e.currentTarget.style.transform = "translateY(-2px)";
-                          e.currentTarget.style.borderColor = "rgba(255, 110, 180, 0.25)";
-                          e.currentTarget.style.boxShadow = `0 15px 45px -10px rgba(0, 0, 0, 0.8), 0 0 40px 4px rgba(255, 110, 180, 0.15)`;
-                      }}
-                      onMouseLeave={(e) => {
-                          e.currentTarget.style.transform = "translateY(0)";
-                          e.currentTarget.style.borderColor = "rgba(255, 110, 180, 0.12)";
-                          e.currentTarget.style.boxShadow = `0 10px 40px -10px rgba(0, 0, 0, 0.7), 0 0 30px 2px rgba(255, 110, 180, 0.08)`;
+                          transition: "border-color 0.4s ease, box-shadow 0.4s ease",
                       }}
                   >
                       {/* Top accent border line to mimic the profile card theme */}
@@ -312,20 +299,31 @@ export default function About() {
                           ))}
                           <Cursor />
                       </div>
-                  </div>
+                  </motion.div>
 
                   {/* Stats Grid Layout styled matching image_fc831e.png */}
-                  <div
+                  <div 
+                      className="about-stats-grid"
                       style={{
                           display: "grid",
                           gridTemplateColumns: "repeat(2, 1fr)",
                           gap: "1.2rem",
                       }}
                   >
-                      {STATS.map(({ icon, label, val, unit, color }) => (
-                          <div
+                      {STATS.map(({ icon, label, val, unit, color }, i) => (
+                          <motion.div
                               key={label}
                               className="stat-card"
+                              initial={{ opacity: 0, y: 20 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: false, amount: 0.1 }}
+                              transition={{ duration: 0.5, delay: 0.4 + i * 0.1 }}
+                              whileHover={{ 
+                                y: -5,
+                                borderColor: color || "rgba(255, 255, 255, 0.15)",
+                                boxShadow: `0 15px 45px -10px rgba(0, 0, 0, 0.7), 0 0 30px ${color || "#fff"}15`
+                              }}
+                              whileTap={{ scale: 0.98 }}
                               style={{
                                   background: "linear-gradient(145deg, #181a20, #111216)",
                                   border: `1px solid rgba(255, 255, 255, 0.04)`,
@@ -335,17 +333,7 @@ export default function About() {
                                   position: "relative",
                                   overflow: "hidden",
                                   boxShadow: `0 10px 35px -10px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 0, 0, 0.2)`,
-                                  transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                              }}
-                              onMouseEnter={(e) => {
-                                  e.currentTarget.style.transform = "translateY(-4px)";
-                                  e.currentTarget.style.borderColor = color || "rgba(255, 255, 255, 0.15)";
-                                  e.currentTarget.style.boxShadow = `0 15px 45px -10px rgba(0, 0, 0, 0.7), 0 0 30px ${color || "#fff"}15`;
-                              }}
-                              onMouseLeave={(e) => {
-                                  e.currentTarget.style.transform = "translateY(0)";
-                                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.04)";
-                                  e.currentTarget.style.boxShadow = `0 10px 35px -10px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 0, 0, 0.2)`;
+                                  transition: "border-color 0.4s ease, box-shadow 0.4s ease",
                               }}
                           >
                               {/* Subtle Top Accent on each Stat card matching its color theme */}
@@ -418,7 +406,7 @@ export default function About() {
 
                               </div>
 
-                          </div>
+                          </motion.div>
                       ))}
                   </div>
 

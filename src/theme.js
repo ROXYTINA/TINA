@@ -25,11 +25,6 @@ export const LAYOUT = {
     padding: "0 3rem",
 };
 
-export const skills = [
-    "React", "Next.js", "TypeScript", "Node.js", "Java", "Spring Boot",
-    "PostgreSQL", "MongoDB", "Redis", "Docker", "AWS", "GraphQL",
-    "Tailwind", "Prisma", "WebSockets", "Git",
-];
 
 export const experiences = [
     {
@@ -64,8 +59,8 @@ export const projects = [
     },
     {
         name: "E-Market",
-        lang: "Next.js",
-        langColor: "#e2e8f0",
+        lang: "NextJS",
+        langColor: "#E53935",
         desc: "A platform for selling and buying products. Users can create an account, add products to their cart, and checkout securely using Strip. Also a seller features for users to sell their products and monitor their sold.",
         tags: ["VueJS", "SupaBase", "TypeScript", "Tailwind"],
         // demoUrl: "https://your-demo-link.com",
@@ -73,8 +68,8 @@ export const projects = [
     },
     {
         name: "Endless Obstacle Game",
-        lang: "Next.js 14",
-        langColor: "#e2e8f0",
+        lang: "NextJS",
+        langColor: "#E53935",
         desc: "A Game developed by Java using OOP concepts. The game concept is inspired by the Offline Dino running in Chrome but the game design and layout is inspired by the Anime Narato.",
         tags: ["OOP", "Java", "Game"],
         // demoUrl: "https://your-demo-link.com",

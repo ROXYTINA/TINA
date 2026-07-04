@@ -40,51 +40,71 @@ export default function Projects() {
         });
   }, []);
 
+
   // Helper utility to match GitHub language values with sleek custom hex tags
   const getLanguageColor = (lang) => {
     if (!lang) return "#1E90FF";
 
-    const normalized = lang.trim();
+    const normalized = lang.trim().toLowerCase();
 
     const colors = {
-      TypeScript: "#1E90FF",
-      JavaScript: "#F7DF1E",
-      React: "#61DAFB",
-      HTML: "#E34F26",
-      CSS: "#1572B6",
-      Python: "#3776AB",
-      Go: "#00ADD8",
-      Java: "#ED8B00",
-      Dart: "#00B4AB",
-      Vue: "#41B883",
-      NextJS: "#E53935",
+      typescript: "#1E90FF",
+      javascript: "#F7DF1E",
+      react: "#61DAFB",
+      html: "#E34F26",
+      css: "#1572B6",
+      python: "#3776AB",
+      go: "#00ADD8",
+      java: "#ED8B00",
+      dart: "#00B4AB",
+      vue: "#41B883",
+      nextjs: "#E53935",
+      "next.js": "#E53935",
     };
 
     return colors[normalized] || "#9CA3AF";
   };
 
+
   return (
-      <section style={{ padding: "6rem 3rem", position: "relative", zIndex: 1 }}>
+      <section
+          style={{
+            padding: "6rem 3rem",
+            position: "relative",
+            zIndex: 1
+      }}>
+
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
 
           {/* Terminal Header */}
           <SectionHeading
               icon={
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fb923c" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                <svg
+                    width="35"
+                    height="35"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={C.pink}
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                >
+                  <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+
                 </svg>
               }
               command="$ ls -la ~/projects"
           />
 
           {/* Outer Dashboard Grid Layout */}
-          <div className="projects-grid" style={{
-            display: "grid",
-            gridTemplateColumns: "15rem 1fr",
-            gap: "2.5rem",
-            alignItems: "start"
+          <div
+              className="projects-grid"
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "2.5rem",
+                alignItems: "start"
           }}>
-
             {/* ── Sidebar: Repositories List (Live Streamed) ── */}
             <motion.div 
                 className="projects-repo-list"
@@ -93,14 +113,15 @@ export default function Projects() {
                 viewport={{ once: false, amount: 0.1 }}
                 transition={{ duration: 0.6 }}
                 style={{
-              background: C.surface,
-              border: `1px solid ${C.border}`,
-              borderRadius: 10,
-              display: "flex",
-              flexDirection: "column",
-              height: "720px",
-                  width: "15rem",
-            }}>
+                  background: C.surface,
+                  border: `1px solid ${C.border}`,
+                  borderRadius: 10,
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "720px",
+                  width: "20rem",
+                  flexShrink: 0
+                }}>
 
               {/* Sidebar Header */}
               <div style={{
@@ -144,8 +165,9 @@ export default function Projects() {
                 overflowY: "auto",
                 flex: 1,
                 padding: "0 1rem",
-                scrollbarWidth: "thin",
-                scrollbarColor: `${C.border} transparent`
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+                "&::-webkit-scrollbar": { display: "none" }
               }}>
                 {loading ? (
                     <div style={{
@@ -194,9 +216,7 @@ export default function Projects() {
                               {r.name}
                             </div>
 
-
                           </div>
-
 
                           <div style={{
                             display: "flex",
@@ -242,6 +262,7 @@ export default function Projects() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: false, amount: 0.1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
+              style={{ flex: 1, minWidth: "300px" }}
             >
               <div style={{
                 fontFamily: C.mono,
@@ -257,11 +278,11 @@ export default function Projects() {
               <div 
                   className="pinned-projects-grid"
                   style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(2, 1fr)",
-                gap: "1rem",
-                width: "100%",
-              }}>
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+                    gap: "1rem",
+                    width: "100%",
+                  }}>
                 {PINNED.map((p, i) => (
                     <motion.div 
                         key={i} 
@@ -287,74 +308,104 @@ export default function Projects() {
                         }}
                     >
                       <div>
+
                         {/* Card Top Title Row */}
-                        <div style={{
-                          display: "flex", justifyContent: "space-between",
-                          alignItems: "start", marginBottom: "0.4rem",
-                        }}>
                           <div style={{
-                            display: "flex", justifyContent: "space-between",
-                            alignItems: "start", marginBottom: "0.4rem",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "start",
+                            marginBottom: "0.4rem",
                           }}>
+
                             <a
                                 href={p.repoUrl || "#"}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 style={{
-                                display: "flex", alignItems: "center", gap: 6,
-                                fontFamily: C.mono, fontSize: "0.76rem",
-                                color: C.pink, fontWeight: 600,
-                                textDecoration: "none",
-                                transition: "color 0.2s",
-                              }}
-                                onMouseEnter={e => e.currentTarget.style.color = "#ffffff"}
-                                onMouseLeave={e => e.currentTarget.style.color = C.pink}
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: 6,
+                                  fontFamily: C.mono,
+                                  fontSize: "0.76rem",
+                                  color: C.pink,
+                                  fontWeight: 600,
+                                  textDecoration: "none",
+                                  transition: "color 0.2s",
+                                }}
+                                  onMouseEnter={e => e.currentTarget.style.color = "#ffffff"}
+                                  onMouseLeave={e => e.currentTarget.style.color = C.pink}
                                 >
                                 {p.name}
                           </a>
                         </div>
 
-                        </div>
-
                         {/* Card Description text */}
                         <p style={{
-                          fontSize: "0.74rem", color: C.textMuted,
-                          lineHeight: 1.5, marginBottom: "0.6rem",
+                          fontSize: "0.74rem",
+                          color: C.textMuted,
+                          lineHeight: 1.5,
+                          marginBottom: "0.6rem",
                         }}>
                           {p.desc}
                         </p>
 
                         {/* Technology chips styled with your pink glow theme */}
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginBottom: "0.6rem" }}>
+                        <div style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: "0.3rem",
+                          marginBottom: "0.6rem"
+                        }}>
+
                           {p.tags.map((t) => (
                               <span key={t} style={{
-                                fontFamily: C.mono, fontSize: "0.6rem",
-                                background: "rgba(255,110,180,0.07)", color: C.pink,
+                                fontFamily: C.mono,
+                                fontSize: "0.6rem",
+                                background: "rgba(255,110,180,0.07)",
+                                color: C.pink,
                                 border: "1px solid rgba(255,110,180,0.18)",
-                                borderRadius: 3, padding: "1px 5px",
-                              }}>{t}</span>
+                                borderRadius: 3,
+                                padding: "1px 5px",
+                              }}>
+                                {t}
+                              </span>
                           ))}
+
                         </div>
+
                       </div>
 
                       {/* Bottom Stats & Trigger Row */}
                       <div style={{
-                        display: "flex", alignItems: "center", gap: "0.75rem",
-                        fontFamily: C.mono, fontSize: "0.64rem",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.75rem",
+                        fontFamily: C.mono,
+                        fontSize: "0.70rem",
                         borderTop: `1px solid ${C.border}`,
                         paddingTop: "0.6rem",
                         marginTop: "0.4rem"
                       }}>
-                        <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                          <span style={{
-                            width: 7, height: 7, borderRadius: "50%",
-                            background: p.langColor || C.pink, display: "inline-block",
-                          }} />
-                          <span style={{ color: C.textDim }}>{p.lang}</span>
-                        </span>
+                        <span
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 4
+                        }}>
 
-                        {/*{p.stars !== undefined && <span style={{ color: C.textDim }}>⭐ {p.stars}</span>}*/}
-                        {/*{p.forks !== undefined && <span style={{ color: C.textDim }}>🍴 {p.forks}</span>}*/}
+                          <span style={{
+                            width: 7,
+                            height: 7,
+                            borderRadius: "50%",
+                            background: p.langColor || C.pink,
+                            display: "inline-block",
+                          }} />
+
+                          <span style={{ color: C.text }}>
+                            {p.lang}
+                          </span>
+
+                        </span>
 
                         {p.demoUrl && (
                         <a

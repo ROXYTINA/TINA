@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 const FULL_NAME = "Sopheakanha";
 
-const MODULES = ["REACT", "NEXT.JS", "NODE.JS", "TYPESCRIPT", "JAVA", "SPRING", "SQL", "JAVASCRIPT", "DOCKER", "GIT", "GRAPHQL"];
+const MODULES = ["REACT", "NEXT.JS", "NODE.JS", "TYPESCRIPT", "JAVASCRIPT", "SPRING", "SQL", "JAVASCRIPT", "DOCKER", "GIT"];
 const CODE_LINES = [
   [1, "comment", "// Welcome to my workspace"],
   [2, "code", null],
@@ -53,10 +53,10 @@ function CodeLine({ num, type, extra }) {
           <span style={green}>{extra}</span>=
           <span style={yellow}>
       {
-        extra === "name"    ? '"Sopheakanha"'                  :
-          extra === "role"    ? '"Full Stack Engineer"'           :
-              extra === "passion" ? '"Engineering Beyond Boundaries"' :
-                  extra === "level"   ? '"Beginner"'                        : '""'}
+        extra === "name"    ? ' "Sreng Sopheakanha" '                  :
+          extra === "role"    ? ' "Full Stack Engineer" '           :
+              extra === "passion" ? ' "Engineering Beyond Boundaries" ' :
+                  extra === "level"   ? ' "Beginner" '                        : '""'}
     </span>
         </>
     ),

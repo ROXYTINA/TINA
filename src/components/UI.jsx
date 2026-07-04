@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence, useSpring, useMotionValue, useTransform } from "framer-motion";
 import { C } from "../theme";
 
@@ -92,37 +92,157 @@ export const Cursor = () => (
 );
 
 export const GridBg = () => {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const springConfig = { damping: 40, stiffness: 300, mass: 0.5 };
-  const smoothX = useSpring(mouseX, springConfig);
-  const smoothY = useSpring(mouseY, springConfig);
-
-  const cssX = useTransform(smoothX, (v) => `${v}px`);
-  const cssY = useTransform(smoothY, (v) => `${v}px`);
+  const canvasRef = useRef(null);
+  const mouseRef = useRef({ x: -1000, y: -1000 });
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    let animationFrameId;
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    const particles = [];
+    const particleCount = Math.min(60, Math.floor((width * height) / 25000));
+    const connectionDist = 180;
+    const mouseDist = 250;
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.4;
+        this.vy = (Math.random() - 0.5) * 0.4;
+        this.size = Math.random() * 2 + 1;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+
+        // Mouse interaction
+        const dx = mouseRef.current.x - this.x;
+        const dy = mouseRef.current.y - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < mouseDist) {
+          const force = (mouseDist - dist) / mouseDist;
+          this.x -= dx * force * 0.02;
+          this.y -= dy * force * 0.02;
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 110, 180, ${0.1 + Math.random() * 0.1})`;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    const handleResize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
     };
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [mouseX, mouseY]);
+
+    const handleMouseMove = (e) => {
+      mouseRef.current = { x: e.clientX, y: e.clientY };
+    };
+
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("mousemove", handleMouseMove);
+
+    const render = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      // Draw Grid Lines with parallax
+      const gridSpacing = 40;
+      const offX = (mouseRef.current.x - width / 2) * 0.02;
+      const offY = (mouseRef.current.y - height / 2) * 0.02;
+
+      ctx.beginPath();
+      ctx.strokeStyle = "rgba(255, 110, 180, 0.05)";
+      ctx.lineWidth = 1;
+
+      for (let x = offX % gridSpacing; x < width; x += gridSpacing) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+      }
+      for (let y = offY % gridSpacing; y < height; y += gridSpacing) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+      }
+      ctx.stroke();
+
+      // Update and Draw Particles
+      particles.forEach((p, i) => {
+        p.update();
+        p.draw();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < connectionDist) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(255, 110, 180, ${0.15 * (1 - dist / connectionDist)})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      });
+
+      // Mouse Glow
+      const gradient = ctx.createRadialGradient(
+        mouseRef.current.x,
+        mouseRef.current.y,
+        0,
+        mouseRef.current.x,
+        mouseRef.current.y,
+        400
+      );
+      gradient.addColorStop(0, "rgba(255, 110, 180, 0.08)");
+      gradient.addColorStop(1, "rgba(255, 110, 180, 0)");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousemove", handleMouseMove);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
 
   return (
-    <motion.div 
+    <canvas
+      ref={canvasRef}
       style={{
-        position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
-        backgroundImage: `
-          radial-gradient(circle at var(--x) var(--y), rgba(255,110,180,0.12) 0%, transparent 60%),
-          linear-gradient(rgba(255,110,180,0.04) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,110,180,0.04) 1px, transparent 1px)`,
-        backgroundSize: "100% 100%, 40px 40px, 40px 40px",
-        // @ts-ignore
-        "--x": cssX,
-        "--y": cssY,
+        position: "fixed",
+        inset: 0,
+        zIndex: 0,
+        pointerEvents: "none",
+        background: C.bg,
       }}
     />
   );

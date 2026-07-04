@@ -7,18 +7,45 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
-dist
-dist-ssr
-*.local
+.pnp
+.pnp.js
 
-# Editor directories and files
+# Testing
+/coverage
+
+# Production
+/dist
+/dist-ssr
+/out
+
+# Misc
+.DS_Store
+*.pem
+
+# Env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor/IDE
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*.patch
+*.diff
+
+# OS files
+Thumbs.db
+Desktop.ini
+
+# Vite
+vite.config.js.timestamp-*

@@ -22,9 +22,8 @@ export default function GlobalStyle() {
       a, button, [role="button"], input, textarea, select {
         cursor: none !important;
       }
-      ::-webkit-scrollbar { width: 6px; }
-      ::-webkit-scrollbar-track { background: ${C.bg}; }
-      ::-webkit-scrollbar-thumb { background: ${C.pinkDim}; border-radius: 3px; }
+      ::-webkit-scrollbar { display: none; }
+      * { scrollbar-width: none; -ms-overflow-style: none; }
       a { text-decoration: none; color: inherit; }
       @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
       @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }

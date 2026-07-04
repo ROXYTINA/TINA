@@ -59,11 +59,13 @@ const PROFILE_ROWS = [
 const LOG_ENTRIES = [
   {
     cmd: "whoami",
-    out: "Full Stack Engineer specializing in distributed systems, real-time architecture, and high-performance web applications. Building scalable, production-grade solutions that demand clean architecture and real delivery.",
+    out: "A year 4 student at ITC curently persuing a degree in Information and Communication Engineering. " +
+        "Really passionate about designing and building system, and applications that meaningful and impactful to society. ",
   },
   {
     cmd: "cat mission.txt",
-    out: "Translating complex business requirements into robust technical solutions. Currently focused on Microservices, Real-time Systems, and AI Integration.",
+    out: "I wanted to become a professional Software Engineer. " +
+        "My mission is to create meaningful and impactful systems that make a positive impact on the world.",
   },
 ];
 
@@ -158,7 +160,9 @@ export default function About() {
                   {/* Rows */}
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.2rem" }}>
                       {PROFILE_ROWS.map(({ label, value, color }) => (
-                          <div key={label} style={{
+                          <div
+                              key={label}
+                              style={{
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
@@ -168,7 +172,7 @@ export default function About() {
                               fontSize: "0.75rem",
                           }}>
                               <span style={{
-                                  color: "#4b5563",
+                                  color: C.text,
                                   fontWeight: "600",
                                   letterSpacing: "0.08em"
                               }}>
@@ -197,7 +201,7 @@ export default function About() {
                           fontSize: "0.75rem",
                       }}>
                           <span style={{
-                              color: "#4b5563",
+                              color: C.text,
                               fontWeight: "600",
                               letterSpacing: "0.08em"
                           }}>

@@ -34,11 +34,13 @@ const SKILLS = [
 
 
 function fibonacciSphere(n) {
+  if (n <= 0) return [];
+  if (n === 1) return [{ x: 0, y: 0, z: 1 }];
   const pts = [];
   const golden = Math.PI * (3 - Math.sqrt(5));
   for (let i = 0; i < n; i++) {
     const y = 1 - (i / (n - 1)) * 2;
-    const r = Math.sqrt(1 - y * y);
+    const r = Math.sqrt(Math.max(0, 1 - y * y));
     const theta = golden * i;
     pts.push({ x: Math.cos(theta) * r, y, z: Math.sin(theta) * r });
   }
@@ -90,6 +92,12 @@ function geodesicMesh(R, subdivisions = 3) {
 
 const BASE_PTS = fibonacciSphere(SKILLS.length);
 
+// Ensure the mesh and base points are calculated correctly
+if (BASE_PTS.length === 0 && SKILLS.length > 0) {
+  // This should not happen with the current logic, but just in case
+  console.warn("BASE_PTS initialization failed");
+}
+
 // --- ENLARGED SPHERE CONFIGURATIONS ---
 const SPHERE_R = 250;
 const CANVAS_SIZE = 740;
@@ -109,8 +117,10 @@ function rotatePoint(pt, ax, ay) {
 }
 
 
-function project(pt, fov = 1000) { // Slightly increased FOV to match the bigger scale
-  const d = fov / (fov - pt.z);
+function project(pt, fov = 1000) { 
+  // Slightly increased FOV to match the bigger scale
+  // Add a small epsilon to avoid division by zero or negative d if z is too large
+  const d = fov / Math.max(1, fov - pt.z);
   return { sx: pt.x * d, sy: pt.y * d, depth: d, z: pt.z };
 }
 
@@ -130,7 +140,7 @@ function SkillSphere() {
   const getItems = useCallback(() => {
     const { x: ax, y: ay } = rotRef.current;
     return SKILLS.map((skill, i) => {
-      const bp = BASE_PTS[i];
+      const bp = BASE_PTS[i] || { x: 0, y: 0, z: 0 };
       const scale = 1 + ICON_OFFSET / SPHERE_R;
       const outerPt = { x: bp.x * SPHERE_R * scale, y: bp.y * SPHERE_R * scale, z: bp.z * SPHERE_R * scale };
       const rp = rotatePoint(outerPt, ax, ay);
@@ -198,9 +208,9 @@ function SkillSphere() {
     const now = performance.now();
     const dt = Math.max(1, now - lastTime.current);
     velRef.current.y = (dx / dt) * 0.1;
-    velRef.current.x = (dy / dt) * 0.1;
+    velRef.current.x = -(dy / dt) * 0.1;
     rotRef.current.y += dx * 0.008;
-    rotRef.current.x += dy * 0.008;
+    rotRef.current.x -= dy * 0.008;
     rotRef.current.x = Math.max(-Math.PI * 0.48, Math.min(Math.PI * 0.48, rotRef.current.x));
     lastPos.current = { x: e.clientX, y: e.clientY };
     lastTime.current = now;
@@ -221,7 +231,8 @@ function SkillSphere() {
             onPointerUp={onPointerUp}
             onPointerLeave={onPointerUp}
             style={{
-              width: CANVAS_SIZE, height: CANVAS_SIZE,
+              width: CANVAS_SIZE,
+              height: CANVAS_SIZE,
               position: "relative",
               cursor: dragging.current ? "grabbing" : "grab",
               userSelect: "none",
@@ -230,27 +241,33 @@ function SkillSphere() {
         >
           <svg
               style={{
-                position: "absolute", inset: 0,
-                width: "100%", height: "100%",
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
                 overflow: "visible",
                 pointerEvents: "none",
               }}
               viewBox={`-${HALF_CANVAS} -${HALF_CANVAS} ${CANVAS_SIZE} ${CANVAS_SIZE}`}
           >
             <defs>
+
               <radialGradient id="sphereDark" cx="45%" cy="38%" r="62%">
                 <stop offset="0%"   stopColor="rgba(28,14,22,0.92)" />
                 <stop offset="70%"  stopColor="rgba(12,5,10,0.97)" />
                 <stop offset="100%" stopColor="rgba(5,2,5,1)" />
               </radialGradient>
+
               <radialGradient id="rimGlow" cx="50%" cy="50%" r="50%">
                 <stop offset="75%"  stopColor="rgba(255,110,180,0)" />
                 <stop offset="100%" stopColor="rgba(255,110,180,0.18)" />
               </radialGradient>
+
               <radialGradient id="specular" cx="35%" cy="28%" r="45%">
                 <stop offset="0%"   stopColor="rgba(255,200,230,0.07)" />
                 <stop offset="100%" stopColor="rgba(255,110,180,0)" />
               </radialGradient>
+
             </defs>
 
             <circle cx={0} cy={0} r={SPHERE_R} fill="url(#sphereDark)" />
@@ -272,8 +289,7 @@ function SkillSphere() {
 
             <circle cx={0} cy={0} r={SPHERE_R} fill="url(#rimGlow)" />
             <circle cx={0} cy={0} r={SPHERE_R} fill="url(#specular)" />
-            <circle cx={0} cy={0} r={SPHERE_R}
-                    fill="none" stroke="rgba(255,110,180,0.3)" strokeWidth={1} />
+            <circle cx={0} cy={0} r={SPHERE_R} fill="none" stroke="rgba(255,110,180,0.3)" strokeWidth={1} />
           </svg>
 
           {items.map(({ name, color, icon, sx, sy, normZ, rz, depth }) => {
@@ -281,9 +297,9 @@ function SkillSphere() {
             const isVisible = rz > -(SPHERE_R * 1.1);
             if (!isVisible) return null;
 
-            const baseSize = 36 + normZ * 28;
+            const baseSize = 36 + Math.max(0, normZ) * 28;
             const isHovered = hovered === name;
-            const opacity = Math.pow(Math.max(0, normZ), 0.6);
+            const opacity = Math.pow(Math.max(0.01, normZ), 0.6);
 
             return (
                 <motion.div
@@ -295,9 +311,14 @@ function SkillSphere() {
                     style={{
                       position: "absolute",
                       left: "50%", top: "50%",
-                      transform: `translate(calc(-50% + ${sx}px), calc(-50% + ${sy}px))`,
-                      display: "flex", flexDirection: "column",
-                      alignItems: "center", gap: 4,
+                      x: sx,
+                      y: sy,
+                      translateX: "-50%",
+                      translateY: "-50%",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 4,
                       opacity,
                       pointerEvents: isFront ? "auto" : "none",
                       zIndex: Math.round(normZ * 100),
@@ -356,13 +377,17 @@ function SkillSphere() {
           transition={{ duration: 1, delay: 0.5 }}
           style={{
             marginTop: "0.5rem",
-            display: "inline-flex", alignItems: "center", gap: 10,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 10,
             background: "rgba(255,255,255,0.03)",
             border: `1px solid ${C.border}`,
-            borderRadius: 50, padding: "0.45rem 1.5rem",
-            fontFamily: C.mono, fontSize: "0.74rem", color: C.textMuted,
+            borderRadius: 50,
+            padding: "0.45rem 1.5rem",
+            fontFamily: C.mono,
+            fontSize: "0.74rem",
+            color: C.text,
           }}>
-          <span style={{ fontSize: "1rem" }}>⊕</span>
           Drag to explore skills universe
         </motion.div>
       </div>
@@ -381,7 +406,7 @@ export default function Skills() {
           >
           <SectionHeading
               icon={
-                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke={C.pink} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke={C.pink} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="3" />
                   <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
                 </svg>

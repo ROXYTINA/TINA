@@ -16,7 +16,7 @@ export default function Footer() {
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
             }}>
                 <span style={{ color: C.pink }}>&lt;/&gt;</span>
-                Sreng Sopheakanha | Software Engineer
+                Sreng Sopheakanha
             </div>
 
             {/* Built with */}

@@ -1,21 +1,24 @@
-<<<<<<< HEAD
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+# 🌸 Sreng Sopheakanha's Portfolio
 
-Currently, two official plugins are available:
+A terminal-inspired, sleek personal portfolio built with **React**, **Vite**, and **Framer Motion**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### ✨ Features
+- **Terminal UI:** Aesthetic code-centric design.
+- **Skill Sphere:** 3D interactive skill cloud.
+- **GitHub Live:** Live repository data integration.
+- **Contact:** Integrated via EmailJS.
 
-## React Compiler
+### 🚀 Setup
+```bash
+git clone https://github.com/ROXYTINA/TINA.git
+npm install
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 👩 Author
+**Sreng Sopheakanha**
+- [GitHub](https://github.com/ROXYTINA) | [LinkedIn](https://www.linkedin.com/in/sreng-sopheakanha-58a5b2296/)
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
-=======
-# TINA
-MY PERSONAL PORTFOLIO
->>>>>>> 3a7b08385661186c3a04e7b334d320bd52bf566d
+---
+*Built with ❤️ by TINA*

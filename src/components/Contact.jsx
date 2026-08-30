@@ -69,12 +69,12 @@ const JSON_LINES = [
             &nbsp;&nbsp;
             <span style={{ color: "#fbbf24" }}>"Telegram":</span>{" "}
             <a
-                href="https://t.me/Da1nonlyRoxy"
+                href="https://t.me/Sopheakanha"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ color: "#a78bfa", textDecoration: "none" }}
             >
-                "Da1nonlyRoxy"
+                "Sopheakanha"
             </a>
         </>
     )],
@@ -211,7 +211,7 @@ export default function Contact() {
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.1 }}
+            viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.7 }}
             whileHover={{ y: -5, boxShadow: `0 15px 45px -10px rgba(167,139,250,0.15)` }}
             whileTap={{ scale: 0.995 }}
@@ -223,9 +223,13 @@ export default function Contact() {
                 transition: "box-shadow 0.4s ease",
                 display: "flex",
                 flexDirection: "column",
-                height: "27rem",
-                width: "30rem",
-                }}>
+                height: "auto",
+                minHeight: "27rem",
+                width: "100%",
+                maxWidth: "30rem",
+                }}
+            className="contact-info-card"
+            >
                     <div style={{
                       background: C.surface,
                         borderBottom: `1px solid ${C.border}`,
@@ -324,7 +328,7 @@ export default function Contact() {
           <motion.div 
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.1 }}
+            viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.7, delay: 0.2 }}
             whileHover={{ y: -5, boxShadow: `0 15px 45px -10px rgba(255,110,180,0.15)` }}
             whileTap={{ scale: 0.995 }}
@@ -434,6 +438,7 @@ export default function Contact() {
 
                 {/* name + email */}
                 <div
+                    className="contact-form-grid"
                     style={{
                         display: "grid",
                         gridTemplateColumns: "1fr 1fr",

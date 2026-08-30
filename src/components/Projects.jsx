@@ -110,7 +110,7 @@ export default function Projects() {
                 className="projects-repo-list"
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false, amount: 0.1 }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6 }}
                 style={{
                   background: C.surface,
@@ -119,7 +119,8 @@ export default function Projects() {
                   display: "flex",
                   flexDirection: "column",
                   height: "720px",
-                  width: "20rem",
+                  width: "100%",
+                  maxWidth: "20rem",
                   flexShrink: 0
                 }}>
 
@@ -260,9 +261,9 @@ export default function Projects() {
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.1 }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              style={{ flex: 1, minWidth: "300px" }}
+              style={{ flex: 1, minWidth: "280px", width: "100%" }}
             >
               <div style={{
                 fontFamily: C.mono,

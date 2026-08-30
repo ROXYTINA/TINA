@@ -110,6 +110,8 @@ export const GridBg = () => {
     const particleCount = Math.min(60, Math.floor((width * height) / 25000));
     const connectionDist = 180;
     const mouseDist = 250;
+    const isMobile = width < 768;
+    const skipParticles = isMobile;
 
     class Particle {
       constructor() {
@@ -146,8 +148,10 @@ export const GridBg = () => {
       }
     }
 
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
+    if (!skipParticles) {
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
     }
 
     const handleResize = () => {
@@ -168,7 +172,7 @@ export const GridBg = () => {
       ctx.clearRect(0, 0, width, height);
 
       // Draw Grid Lines with parallax
-      const gridSpacing = 40;
+      const gridSpacing = isMobile ? 60 : 40;
       const offX = (mouseRef.current.x - width / 2) * 0.02;
       const offY = (mouseRef.current.y - height / 2) * 0.02;
 
@@ -186,27 +190,29 @@ export const GridBg = () => {
       }
       ctx.stroke();
 
-      // Update and Draw Particles
-      particles.forEach((p, i) => {
-        p.update();
-        p.draw();
+      if (!skipParticles) {
+        // Update and Draw Particles
+        particles.forEach((p, i) => {
+          p.update();
+          p.draw();
 
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const dx = p.x - p2.x;
-          const dy = p.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dx = p.x - p2.x;
+            const dy = p.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < connectionDist) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(255, 110, 180, ${0.15 * (1 - dist / connectionDist)})`;
-            ctx.lineWidth = 0.5;
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
+            if (dist < connectionDist) {
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(255, 110, 180, ${0.15 * (1 - dist / connectionDist)})`;
+              ctx.lineWidth = 0.5;
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.stroke();
+            }
           }
-        }
-      });
+        });
+      }
 
       // Mouse Glow
       const gradient = ctx.createRadialGradient(
@@ -252,8 +258,9 @@ export const SectionHeading = ({ icon, command }) => (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, amount: 0.1 }}
+      viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.5 }}
+      className="section-heading"
       style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: "3rem" }}
     >
     <span style={{ color: C.pink, fontSize: "1.3rem" }}>{icon}</span>

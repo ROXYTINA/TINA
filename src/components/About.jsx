@@ -98,7 +98,7 @@ export default function About() {
                   className="profile-card"
                   initial={{ opacity: 0, x: -30 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: false, amount: 0.1 }}
+                  viewport={{ once: true, amount: 0.1 }}
                   transition={{ duration: 0.7 }}
                   whileHover={{ 
                     y: -5,
@@ -116,6 +116,7 @@ export default function About() {
                       overflow: "hidden",
                       boxShadow: `0 10px 40px -10px rgba(0, 0, 0, 0.7), 0 0 30px 2px rgba(255, 110, 180, 0.12)`,
                       transition: "border-color 0.4s ease, box-shadow 0.4s ease",
+                      width: "100%"
                   }}
               >
                   {/* Decorative Top Accent Line to make it pop */}
@@ -162,6 +163,7 @@ export default function About() {
                       {PROFILE_ROWS.map(({ label, value, color }) => (
                           <div
                               key={label}
+                              className="profile-row"
                               style={{
                               display: "flex",
                               justifyContent: "space-between",
@@ -174,7 +176,7 @@ export default function About() {
                               <span style={{
                                   color: C.text,
                                   fontWeight: "600",
-                                  letterSpacing: "0.08em"
+                                  letterSpacing: "0.08em",
                               }}>
                                 {label}
                               </span>
@@ -183,7 +185,8 @@ export default function About() {
                                   color,
                                   fontWeight: 600,
                                   letterSpacing: "0.02em",
-                                  textShadow: color === C.pink || color === C.cyan ? `0 0 10px ${color}40` : "none" // Subtle glowing text
+                                  textShadow: color === C.pink || color === C.cyan ? `0 0 10px ${color}40` : "none",
+                                  textAlign: "right",
                               }}>
                                 {value}
                               </span>
@@ -192,7 +195,9 @@ export default function About() {
                       ))}
 
                       {/* Status Row */}
-                      <div style={{
+                      <div 
+                          className="profile-row"
+                          style={{
                           display: "flex",
                           justifyContent: "space-between",
                           alignItems: "center",
@@ -203,24 +208,29 @@ export default function About() {
                           <span style={{
                               color: C.text,
                               fontWeight: "600",
-                              letterSpacing: "0.08em"
+                              letterSpacing: "0.08em",
                           }}>
                             STATUS
                           </span>
 
-                          <span style={{
-                              background: "rgba(74,222,128,0.06)",
-                              color: C.green,
-                              border: `1px solid rgba(74,222,128,0.3)`,
-                              borderRadius: 5,
-                              padding: "3px 12px",
-                              fontSize: "0.68rem",
-                              fontWeight: "700",
-                              letterSpacing: "0.06em",
-                              boxShadow: "0 0 10px rgba(74,222,128,0.15)" // Glow effect for status badge
+                          <div style={{
+                              display: "flex",
+                              justifyContent: "flex-end",
                           }}>
-                            LEARNING
-                          </span>
+                              <span style={{
+                                  background: "rgba(74,222,128,0.06)",
+                                  color: C.green,
+                                  border: `1px solid rgba(74,222,128,0.3)`,
+                                  borderRadius: 5,
+                                  padding: "3px 12px",
+                                  fontSize: "0.68rem",
+                                  fontWeight: "700",
+                                  letterSpacing: "0.06em",
+                                  boxShadow: "0 0 10px rgba(74,222,128,0.15)" // Glow effect for status badge
+                              }}>
+                                LEARNING
+                              </span>
+                          </div>
                       </div>
                   </div>
 

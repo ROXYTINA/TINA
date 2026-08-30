@@ -54,7 +54,7 @@ function CodeLine({ num, type, extra }) {
           <span style={yellow}>
       {
         extra === "name"    ? ' "Sreng Sopheakanha" '                  :
-          extra === "role"    ? ' "Full Stack Engineer" '           :
+          extra === "role"    ? ' "Full Stack Developer" '           :
               extra === "passion" ? ' "Engineering Beyond Boundaries" ' :
                   extra === "level"   ? ' "Beginner" '                        : '""'}
     </span>
@@ -64,14 +64,17 @@ function CodeLine({ num, type, extra }) {
   }[type];
 
   return (
-      <div style={{
+      <div 
+          className="hero-code-line"
+          style={{
         display: "flex",
         gap: "1.2rem",
         lineHeight: 1.9,
-        fontSize: "1.6rem"
       }}>
 
-      <span style={
+      <span 
+          className="hero-code-num"
+          style={
         {
           color: C.textDim,
           minWidth: 15,
@@ -82,7 +85,9 @@ function CodeLine({ num, type, extra }) {
         {num}
       </span>
 
-      <span style={
+      <span 
+          className="hero-code-content"
+          style={
         {
           fontFamily: C.mono,
           fontSize: "0.75rem",
@@ -189,7 +194,7 @@ export default function Hero() {
               className="hero-name"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.1 }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               style={{
             fontSize: "3.5rem",
@@ -224,7 +229,7 @@ export default function Hero() {
         <motion.p 
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: false, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           style={{
             fontFamily: C.mono,
@@ -232,13 +237,13 @@ export default function Hero() {
             color: C.pink,
             marginBottom: "0.5rem"
           }}>
-          &lt;Engineer /&gt; Beginner Full Stack Engineer.
+          &lt;Engineer /&gt; Beginner Full Stack Developer.
         </motion.p>
 
         <motion.p 
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: false, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           style={{
             color: C.textMuted,
@@ -257,7 +262,7 @@ export default function Hero() {
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.5, delay: 0.5 }}
           style={{
             display: "flex",
@@ -292,7 +297,7 @@ export default function Hero() {
               }}
           >
             <FaGithub size={18} />
-            Check MY GitHub
+            Check MY GITHUB
           </button>
 
         </motion.div>
@@ -301,7 +306,7 @@ export default function Hero() {
         <motion.div 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: false, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 1, delay: 0.6 }}
           style={{
             display: "flex",
@@ -340,7 +345,7 @@ export default function Hero() {
       <motion.div 
         initial={{ opacity: 0, x: 20 }}
         whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: false, amount: 0.1 }}
+        viewport={{ once: true, amount: 0.1 }}
         transition={{ duration: 0.6, delay: 0.4 }}
         whileHover={{ 
           y: -8,

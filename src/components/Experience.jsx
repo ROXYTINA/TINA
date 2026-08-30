@@ -14,14 +14,19 @@ export default function Experience() {
 
         <div style={{ position: "relative" }}>
           {/* vertical timeline line */}
-          <div style={{
+          <div 
+              className="experience-timeline-line"
+              style={{
             position: "absolute", left: 15, top: 0, bottom: 0,
             width: 1,
             background: `linear-gradient(${C.pink}, transparent)`,
           }} />
 
           {experiences.map((exp, i) => (
-            <div key={i} style={{
+            <div 
+                key={i} 
+                className="experience-grid"
+                style={{
               display: "grid",
               gridTemplateColumns: "auto 1fr",
               gap: "2rem",
@@ -29,7 +34,9 @@ export default function Experience() {
               alignItems: "start",
             }}>
               {/* dot */}
-              <div style={{
+              <div 
+                  className="experience-dot-container"
+                  style={{
                 width: 32, height: 32, borderRadius: "50%",
                 background: C.bg, border: `2px solid ${C.pink}`,
                 display: "flex", alignItems: "center", justifyContent: "center",

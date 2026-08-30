@@ -74,5 +74,14 @@ export const projects = [
         tags: ["OOP", "Java", "Game"],
         // demoUrl: "https://your-demo-link.com",
         repoUrl: "https://github.com/ROXYTINA/Endless_obstacles",
+    },
+    {
+        name: "Devlies - npm package",
+        lang: "typescript",
+        langColor: "#1E90FF",
+        desc: "A fun package created to generate a funny quote for developers. The package is available on npm and can be used in any project.",
+        tags: ["typescript", "javascript", "npm", "nodejs", "package"],
+        demoUrl: "https://www.npmjs.com/package/devlies",
+        repoUrl: "https://github.com/ROXYTINA/devlies.git",
     }
 ];

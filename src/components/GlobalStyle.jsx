@@ -34,7 +34,11 @@ export default function GlobalStyle() {
       }
       @media (max-width: 900px) {
         .projects-grid {
-          grid-template-columns: 1fr !important;
+          flex-direction: column !important;
+        }
+        .projects-repo-list {
+          width: 100% !important;
+          height: 400px !important;
         }
       }
       @media (max-width: 768px) {
@@ -42,15 +46,22 @@ export default function GlobalStyle() {
             padding-bottom: 70px !important;
         }
         section {
-          padding: 3rem 1.5rem !important;
+          padding: 4rem 1.5rem !important;
         }
         .hero-section {
-          padding: 6rem 1.5rem 3rem !important;
+          padding: 4rem 1.5rem 2rem !important;
+          height: auto !important;
+          min-height: auto !important;
         }
         .hero-grid {
           grid-template-columns: 1fr !important;
+          gap: 2rem !important;
         }
-        .about-grid, .contact-grid {
+        .about-grid {
+          grid-template-columns: 1fr !important;
+          gap: 2rem !important;
+        }
+        .contact-grid {
           grid-template-columns: 1fr !important;
         }
         .sidebar-nav {
@@ -87,10 +98,6 @@ export default function GlobalStyle() {
             width: 100% !important;
             height: 100% !important;
         }
-        .projects-repo-list {
-            height: 400px !important;
-            width: 100% !important;
-        }
         .pinned-projects-grid {
             grid-template-columns: 1fr !important;
         }
@@ -103,19 +110,56 @@ export default function GlobalStyle() {
         body, a, button, [role="button"], input, textarea, select {
             cursor: auto !important;
         }
+        .experience-grid {
+          grid-template-columns: 1fr !important;
+          gap: 1rem !important;
+        }
+        .experience-timeline-line {
+          left: 10px !important;
+        }
+        .experience-dot-container {
+          width: 20px !important;
+          justify-content: flex-start !important;
+        }
+        .profile-row {
+          flex-direction: column !important;
+          align-items: flex-start !important;
+          gap: 0.4rem !important;
+        }
+        .profile-row span:last-child, .profile-row div:last-child {
+          text-align: left !important;
+          justify-content: flex-start !important;
+          width: 100% !important;
+        }
+      }
+      @media (max-width: 600px) {
+        .about-stats-grid {
+          grid-template-columns: 1fr !important;
+        }
+        .contact-info-card {
+           width: 100% !important;
+           height: auto !important;
+           min-height: 20rem !important;
+        }
+        .contact-form-grid {
+           grid-template-columns: 1fr !important;
+        }
       }
       @media (max-width: 480px) {
         body {
             padding-bottom: 60px !important;
         }
         .hero-name {
-            font-size: 2.5rem !important;
+            font-size: 2.2rem !important;
         }
         .hero-name-typed {
-            font-size: 3rem !important;
+            font-size: 2.8rem !important;
         }
         .sidebar-nav {
             height: 60px !important;
+        }
+        .section-heading {
+          margin-bottom: 1.5rem !important;
         }
       }
     `;

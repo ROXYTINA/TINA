@@ -17,12 +17,12 @@ const JSON_LINES = [
       <>
         <span style={{ color: "#fbbf24" }}>"email":</span>{" "}
         <a
-            href="https://mail.google.com/mail/?view=cm&to=kanharoth12345@gmail.com"
+            href={`https://mail.google.com/mail/?view=cm&to=${import.meta.env.VITE_CONTACT_EMAIL || 'your_email@gmail.com'}`}
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: "#a78bfa", textDecoration: "none" }}
         >
-          kanharoth12345@gmail.com
+          {import.meta.env.VITE_CONTACT_EMAIL || "your_email@gmail.com"}
         </a>,
       </>
   )],
@@ -133,7 +133,7 @@ export default function Contact() {
           from_email: form.email,
           subject: form.subject,
           message: form.message,
-          to_email: "kanharoth12345@gmail.com",
+          to_email: import.meta.env.VITE_CONTACT_EMAIL || "your_email@gmail.com",
         },
         publicKey
       );

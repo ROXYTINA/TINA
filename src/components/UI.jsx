@@ -3,20 +3,24 @@ import { motion, AnimatePresence, useSpring, useMotionValue, useTransform } from
 import { C } from "../theme";
 
 export const CustomCursor = () => {
-  const mouseX = useMotionValue(-100);
-  const mouseY = useMotionValue(-100);
-
-  const springConfig = { damping: 25, stiffness: 400, mass: 0.5 };
-  const cursorX = useSpring(mouseX, springConfig);
-  const cursorY = useSpring(mouseY, springConfig);
-
+  const cursorRef = useRef(null);
   const [ripples, setRipples] = useState([]);
+  const mouseRef = useRef({ x: -1000, y: -1000 });
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
+      // Direct DOM update for main cursor (fastest)
+      if (cursorRef.current) {
+        const x = e.clientX;
+        const y = e.clientY;
+        cursorRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+      }
+      
+      // Update ref for canvas interaction (no re-render)
+      mouseRef.current.x = e.clientX;
+      mouseRef.current.y = e.clientY;
     };
+
     const handleClick = (e) => {
       const newRipple = {
         id: Date.now(),
@@ -35,11 +39,13 @@ export const CustomCursor = () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mousedown", handleClick);
     };
-  }, [mouseX, mouseY]);
+  }, []);
 
   return (
     <>
-      <motion.div
+      <GridBg mouseRef={mouseRef} />
+      <div
+        ref={cursorRef}
         className="custom-cursor"
         style={{
           position: "fixed",
@@ -52,10 +58,9 @@ export const CustomCursor = () => {
           pointerEvents: "none",
           zIndex: 9999,
           mixBlendMode: "difference",
-          x: cursorX,
-          y: cursorY,
-          translateX: "-50%",
-          translateY: "-50%",
+          willChange: "transform",
+          transform: "translate3d(-100px, -100px, 0) translate(-50%, -50%)",
+          transition: "transform 0.05s linear", // Very short transition for a bit of smoothness without lag
         }}
       />
       <AnimatePresence>
@@ -91,9 +96,8 @@ export const Cursor = () => (
   }} />
 );
 
-export const GridBg = () => {
+export const GridBg = ({ mouseRef }) => {
   const canvasRef = useRef(null);
-  const mouseRef = useRef({ x: -1000, y: -1000 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -132,8 +136,10 @@ export const GridBg = () => {
         // Mouse interaction
         const dx = mouseRef.current.x - this.x;
         const dy = mouseRef.current.y - this.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < mouseDist) {
+        // Use squared distance for cheaper check
+        const distSq = dx * dx + dy * dy;
+        if (distSq < mouseDist * mouseDist) {
+          const dist = Math.sqrt(distSq);
           const force = (mouseDist - dist) / mouseDist;
           this.x -= dx * force * 0.02;
           this.y -= dy * force * 0.02;
@@ -161,12 +167,7 @@ export const GridBg = () => {
       canvas.height = height;
     };
 
-    const handleMouseMove = (e) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY };
-    };
-
     window.addEventListener("resize", handleResize);
-    window.addEventListener("mousemove", handleMouseMove);
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
@@ -196,21 +197,23 @@ export const GridBg = () => {
           p.update();
           p.draw();
 
-          for (let j = i + 1; j < particles.length; j++) {
-            const p2 = particles[j];
-            const dx = p.x - p2.x;
-            const dy = p.y - p2.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const distSq = dx * dx + dy * dy;
 
-            if (dist < connectionDist) {
-              ctx.beginPath();
-              ctx.strokeStyle = `rgba(255, 110, 180, ${0.15 * (1 - dist / connectionDist)})`;
-              ctx.lineWidth = 0.5;
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.stroke();
-            }
+          if (distSq < connectionDist * connectionDist) {
+            const dist = Math.sqrt(distSq);
+            const opacity = 0.15 * (1 - dist / connectionDist);
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(255, 110, 180, ${opacity})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
           }
+        }
         });
       }
 
@@ -235,10 +238,9 @@ export const GridBg = () => {
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mousemove", handleMouseMove);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [mouseRef]);
 
   return (
     <canvas

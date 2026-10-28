@@ -10,11 +10,6 @@ A terminal-inspired, sleek personal portfolio built with **React**, **Vite**, an
 - **Responsive Design:** Fully optimized for mobile and desktop views.
 - **Security Focused:** Implemented CSP and security headers for safe hosting.
 
-### 🛡️ Security Features
-- **Content Security Policy (CSP):** Restricted resource loading to trusted domains only.
-- **Security Headers:** Implemented HSTS, X-Frame-Options, X-Content-Type-Options, and more.
-- **Hosting Compatibility:** Pre-configured `_headers` (Netlify/Cloudflare) and `.htaccess` (Apache).
-
 ###  Setup
 ```bash
 git clone https://github.com/ROXYTINA/TINA.git

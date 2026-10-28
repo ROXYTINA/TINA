@@ -1,8 +1,8 @@
-# 🚀 Nexus Dashboard | Sreng Sopheakanha
+#  Nexus Dashboard | Sreng Sopheakanha
 
 A terminal-inspired, sleek personal portfolio built with **React**, **Vite**, and **Framer Motion**.
 
-### ✨ Features
+###  Features
 - **Terminal UI:** Aesthetic code-centric design.
 - **Skill Sphere:** 3D interactive skill cloud.
 - **GitHub Live:** Live repository data integration.
@@ -15,13 +15,14 @@ A terminal-inspired, sleek personal portfolio built with **React**, **Vite**, an
 - **Security Headers:** Implemented HSTS, X-Frame-Options, X-Content-Type-Options, and more.
 - **Hosting Compatibility:** Pre-configured `_headers` (Netlify/Cloudflare) and `.htaccess` (Apache).
 
-### 🚀 Setup
+###  Setup
 ```bash
 git clone https://github.com/ROXYTINA/TINA.git
 npm install
 npm run dev
 ```
 
+<<<<<<< HEAD
 ## 🛡️ Security & Configuration
 
 The website uses environment variables to keep credentials secure. Ensure you create a `.env` file in the root directory based on `.env.example`:
@@ -38,8 +39,11 @@ The project includes pre-configured security headers for various hosting platfor
 - `index.html`: Includes meta-tag based security policies as a fallback.
 
 ## 👤 Author
+=======
+###  Author
+>>>>>>> dba326e86d2becba4a7f8a9e6bc51f3d7494cabe
 **Sreng Sopheakanha**
-- [GitHub](https://github.com/ROXYTINA) | [LinkedIn](https://www.linkedin.com/in/sreng-sopheakanha-58a5b2296/) | [Telegram](https://t.me/Da1nonlyRoxy)
+- [GitHub](https://github.com/ROXYTINA) | [LinkedIn](https://www.linkedin.com/in/sreng-sopheakanha-58a5b2296/) | [Telegram](https://t.me/Sopheakanha)
 
 ---
-*Built with ❤️ in Cambodia*
+*Built by KANHA*

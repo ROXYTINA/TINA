@@ -8,7 +8,6 @@ A terminal-inspired, sleek personal portfolio built with **React**, **Vite**, an
 - **GitHub Live:** Live repository data integration.
 - **Contact:** Integrated via EmailJS.
 - **Responsive Design:** Fully optimized for mobile and desktop views.
-- **Security Focused:** Implemented CSP and security headers for safe hosting.
 
 ###  Setup
 ```bash
@@ -16,6 +15,7 @@ git clone https://github.com/ROXYTINA/TINA.git
 npm install
 npm run dev
 ```
+
 ###  Author
 **Sreng Sopheakanha**
 - [GitHub](https://github.com/ROXYTINA) | [LinkedIn](https://www.linkedin.com/in/sreng-sopheakanha-58a5b2296/) | [Telegram](https://t.me/Sopheakanha)

@@ -18,7 +18,7 @@ npm run dev
 
 ###  Author
 **Sreng Sopheakanha**
-- [GitHub](https://github.com/ROXYTINA) | [LinkedIn](https://www.linkedin.com/in/sreng-sopheakanha-58a5b2296/) | [Telegram](https://t.me/Sopheakanha)
+- [GitHub](https://github.com/ROXYTINA) | [LinkedIn](https://www.linkedin.com/in/sreng-sopheakanha-58a5b2296/) | [Telegram](https://t.me/Sopheakanha) | [Credly](https://www.credly.com/users/sreng-sopheakanha)
 
 ---
 *Built by KANHA*

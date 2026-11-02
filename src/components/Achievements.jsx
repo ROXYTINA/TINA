@@ -54,6 +54,16 @@ const CATEGORIES = {
                 date: "2026",
                 description: "Key AWS security concepts: the Shared Responsibility Model, IAM, Key Management Service, threat modeling and governance.",
                 skills: ["AWS", "Cloud Security", "IAM"]
+            },
+            {
+                id: "a51f5a3c-08be-44b4-9f5c-8fe76bdba315",
+                image: "https://images.credly.com/images/b6050277-c769-4d17-8c77-3fa963830231/linkedin_thumb_blob",
+                short: "AWS",
+                title: "AWS Knowledge: Events and Workflows",
+                issuer: "AWS Training and Certification",
+                date: "2026",
+                description: "Knowledge of event-driven computing and AWS Serverless concepts with a focus on AWS Step Functions, Amazon EventBridge, Amazon SQS and Amazon SNS.",
+                skills: ["AWS", "Serverless", "Events & Workflows"]
             }
         ]
     },
@@ -330,17 +340,40 @@ export default function Achievements() {
                                 </div>
 
                                 {isBadge ? (
-                                    <div
-                                        style={{
-                                            display: "grid",
-                                            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 250px), 1fr))",
-                                            gap: "1.25rem"
-                                        }}
-                                    >
+                                    <>
+                                        <div
+                                            style={{
+                                                display: "grid",
+                                                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 250px), 1fr))",
+                                                gap: "1.25rem"
+                                            }}
+                                        >
                                         {cat.items.map((ach, i) => (
                                             <BadgeCard key={ach.id} ach={ach} index={i} />
                                         ))}
                                     </div>
+                                    <div style={{ textAlign: "center", marginTop: "1.5rem" }}>
+                                        <a
+                                            href="https://www.credly.com/users/sreng-sopheakanha"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            style={{
+                                                background: "transparent",
+                                                border: "none",
+                                                cursor: "pointer",
+                                                fontFamily: C.mono,
+                                                fontSize: "0.8rem",
+                                                color: C.textMuted,
+                                                display: "inline-flex",
+                                                alignItems: "center",
+                                                gap: 8,
+                                                textDecoration: "none"
+                                            }}
+                                        >
+                                            View all badges on Credly →
+                                        </a>
+                                    </div>
+                                </>
                                 ) : (
                                     <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
                                         {cat.items.map((ach, i) => (

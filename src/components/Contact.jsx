@@ -59,7 +59,7 @@ const JSON_LINES = [
             style={{ color: "#a78bfa", textDecoration: "none" }}
         >
           "sreng-sopheakanha"
-        </a>
+        </a>,
       </>
   )],
 
@@ -75,26 +75,39 @@ const JSON_LINES = [
                 style={{ color: "#a78bfa", textDecoration: "none" }}
             >
                 "Sopheakanha"
+            </a>,
+        </>
+    )],
+
+    [8, (
+        <>
+            &nbsp;&nbsp;
+            <span style={{ color: "#fbbf24" }}>"credly":</span>{" "}
+            <a
+                href="https://www.credly.com/users/sreng-sopheakanha"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "#a78bfa", textDecoration: "none" }}
+            >
+                "sreng-sopheakanha"
             </a>
         </>
     )],
 
+    [9, <>{"},"}</>],
 
-
-    [8, <>{"},"}</>],
-
-  [9, (
+  [10, (
       <>
         <span style={{ color: "#fbbf24" }}>"location":</span>{" "}
         <span style={{ color: "#a78bfa" }}>"Phnom Penh, Cambodia"</span>
       </>
   )],
 
-  [10, <span style={{ color: "#94a3b8" }}>{"}"}</span>],
+  [11, <span style={{ color: "#94a3b8" }}>{"}"}</span>],
 
-  [11, null],
+  [12, null],
 
-  [12, (
+  [13, (
       <span style={{ color: "#475569" }}>
       {"// Waiting for connection..."}
     </span>
@@ -312,7 +325,7 @@ export default function Contact() {
                             minWidth: 16,
                             textAlign: "right",
                             userSelect: "none"
-                    }}>13
+                    }}>14
                     </span>
 
                     <Cursor />

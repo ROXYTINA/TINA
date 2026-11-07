@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { C } from "../theme";
 import { SectionHeading } from "./UI";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import competitionimg from "../assets/img.png";
 
 /*
@@ -64,6 +64,56 @@ const CATEGORIES = {
                 date: "2026",
                 description: "Knowledge of event-driven computing and AWS Serverless concepts with a focus on AWS Step Functions, Amazon EventBridge, Amazon SQS and Amazon SNS.",
                 skills: ["AWS", "Serverless", "Events & Workflows"]
+            },
+            {
+                id: "b25effc3-d81e-4af9-a028-5b6d6e6688f4",
+                image: "https://images.credly.com/images/177492fb-f012-48b3-b01b-729f84ef9e2a/linkedin_thumb_blob",
+                short: "AWS",
+                title: "AWS Knowledge: Amazon ECS",
+                issuer: "AWS Training and Certification",
+                date: "2026",
+                description: "Earners of this badge have developed knowledge on Amazon Elastic Container Service (Amazon ECS) concepts and services.",
+                skills: ["AWS", "Amazon ECS", "Containers"]
+            },
+            {
+                id: "d4d22fe1-8315-423e-a699-b37d1fcc76c3",
+                image: "https://images.credly.com/images/7cf036b0-c609-4378-a7be-9969e1dea7ab/linkedin_thumb_blob",
+                short: "AWS",
+                title: "AWS Knowledge: Cloud Essentials",
+                issuer: "AWS Training and Certification",
+                date: "2026",
+                description: "Earners of this badge have developed knowledge of foundational AWS Cloud concepts with a focus on AWS Compute, Storage, Networking and Database services, security, architecture, pricing, and support.",
+                skills: ["AWS", "Cloud Essentials", "Core Services"]
+            },
+            {
+                id: "80cdd47d-66d5-4e7c-b037-82dac4a92c24",
+                image: "https://images.credly.com/images/635449f2-3a53-40b3-bf08-5af4fb95df61/linkedin_thumb_blob",
+                short: "AWS",
+                title: "AWS Knowledge: File Storage",
+                issuer: "AWS Training and Certification",
+                date: "2026",
+                description: "Earners of this badge have developed technical skills and knowledge of AWS storage services with a focus on Amazon Elastic File System (EFS) and Amazon FSx.",
+                skills: ["AWS", "File Storage", "EFS"]
+            },
+            {
+                id: "90d400e8-df3d-4dc7-8a42-ee4e2e4ab088",
+                image: "https://images.credly.com/images/e1c202b1-bca1-469a-9149-127b4fe891d7/linkedin_thumb_blob",
+                short: "AWS",
+                title: "AWS Knowledge: Networking Core",
+                issuer: "AWS Training and Certification",
+                date: "2026",
+                description: "Earners of this badge have developed technical knowledge of AWS networking concepts and services with a focus on Amazon VPC, AWS Cloud WAN and Amazon Route 53.",
+                skills: ["AWS", "Networking", "VPC"]
+            },
+            {
+                id: "38ac965a-f195-4e1a-b9b3-4cae7c6b44a8",
+                image: "https://images.credly.com/images/a08cf90b-9838-4f6c-82bd-8db85fb89dd5/linkedin_thumb_blob",
+                short: "AWS",
+                title: "AWS Educate Getting Started with Databases",
+                issuer: "AWS Training and Certification",
+                date: "2026",
+                description: "Earners of this badge have completed the Getting Started with Databases training. They have demonstrated the ability to set up an Amazon Relational Database instance and use SQL commands.",
+                skills: ["AWS", "Databases", "RDS", "SQL"]
             }
         ]
     },
@@ -112,46 +162,44 @@ function StarFallback({ size = 56 }) {
     );
 }
 
-/* ---------- Badge card: badge is the hero, text stays short ---------- */
-function BadgeCard({ ach, index }) {
+/* ---------- Badge card: Slimmer and more compact ---------- */
+function BadgeCard({ ach, index, isHovered, onHover }) {
     const [failed, setFailed] = useState(false);
     return (
         <motion.article
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.45, delay: index * 0.08 }}
-            whileHover={{ borderColor: C.pink }}
+            onHoverStart={() => onHover(index)}
+            onHoverEnd={() => onHover(null)}
             style={{
                 background: C.surface,
-                border: `1px solid ${C.border}`,
-                borderRadius: 16,
+                border: `1px solid ${isHovered ? C.pink : C.border}`,
+                borderRadius: 12,
                 overflow: "hidden",
                 display: "flex",
-                flexDirection: "column"
+                flexDirection: "column",
+                width: 220,
+                flexShrink: 0,
+                position: "relative",
+                transition: "border-color 0.3s ease",
             }}
         >
             {/* Stage */}
             <div
                 style={{
                     position: "relative",
-                    height: 200,
+                    height: 140,
                     overflow: "hidden",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     borderBottom: `1px solid ${C.border}`,
                     backgroundImage: `radial-gradient(circle at 50% 55%, ${C.pinkGlow} 0%, transparent 65%), ${dotGrid}`,
-                    backgroundSize: "100% 100%, 14px 14px"
+                    backgroundSize: "100% 100%, 10px 10px"
                 }}
             >
-        <span style={{ position: "absolute", top: 12, left: 14, fontFamily: C.mono, fontSize: "0.7rem", color: C.pink, zIndex: 2 }}>
-          {ach.short}
-        </span>
-                <span style={{ position: "absolute", top: 12, right: 14, fontFamily: C.mono, fontSize: "0.7rem", color: C.textDim, zIndex: 2 }}>
-          {ach.date}
-        </span>
-
+                <span style={{ position: "absolute", top: 8, left: 10, fontFamily: C.mono, fontSize: "0.6rem", color: C.pink, zIndex: 2 }}>
+                    {ach.short}
+                </span>
+                
                 {ach.image && !failed ? (
                     <motion.img
                         src={ach.image}
@@ -159,50 +207,98 @@ function BadgeCard({ ach, index }) {
                         loading="lazy"
                         onError={() => setFailed(true)}
                         style={{
-                            width: 200,
-                            height: 200,
+                            width: 120,
+                            height: 120,
                             objectFit: "contain",
                             scale: BADGE_ZOOM,
-                            filter: "drop-shadow(0 10px 18px rgba(0,0,0,0.55))"
+                            filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.4))"
                         }}
-                        whileHover={{ scale: BADGE_ZOOM * 1.07, rotate: -3 }}
+                        animate={isHovered ? { scale: BADGE_ZOOM * 1.1, rotate: -3 } : { scale: BADGE_ZOOM, rotate: 0 }}
                         transition={{ type: "spring", stiffness: 260, damping: 16 }}
                     />
                 ) : (
-                    <StarFallback />
+                    <StarFallback size={40} />
                 )}
             </div>
 
             {/* Body */}
-            <div style={{ padding: "1.1rem 1.25rem 1.25rem", display: "flex", flexDirection: "column", gap: "0.6rem", flex: 1 }}>
-                <h3 style={{ fontFamily: C.mono, fontSize: "0.95rem", color: C.pink, margin: 0, lineHeight: 1.35 }}>{ach.title}</h3>
-                <div style={{ fontFamily: C.mono, fontSize: "0.72rem", color: C.text, fontWeight: 600 }}>{ach.issuer}</div>
-                <p
-                    style={{
-                        fontSize: "0.8rem",
-                        color: C.textMuted,
-                        lineHeight: 1.55,
-                        margin: 0,
-                        display: "-webkit-box",
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: "vertical",
-                        overflow: "hidden"
-                    }}
-                >
-                    {ach.description}
-                </p>
-
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", marginTop: "auto", paddingTop: "0.4rem" }}>
-                    {ach.skills.slice(0, 3).map((s) => (
-                        <Chip key={s}>{s}</Chip>
-                    ))}
-                </div>
+            <div style={{ padding: "0.8rem", display: "flex", flexDirection: "column", gap: "0.4rem", flex: 1 }}>
+                <h3 style={{ 
+                    fontFamily: C.mono, 
+                    fontSize: "0.8rem", 
+                    color: C.pink, 
+                    margin: 0, 
+                    lineHeight: 1.3,
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    height: "2.1rem"
+                }}>{ach.title}</h3>
+                <div style={{ fontFamily: C.mono, fontSize: "0.65rem", color: C.textDim }}>{ach.issuer} • {ach.date}</div>
             </div>
         </motion.article>
     );
 }
 
-/* ---------- Spotlight card: photo + big rank stamp ---------- */
+function BadgeSlider({ items }) {
+    const [hoveredIndex, setHoveredIndex] = useState(null);
+    const scrollRef = useRef(null);
+
+    // Continuous scroll animation logic if needed, or just let users scroll
+    // Let's implement a smooth horizontal scroll container
+    
+    return (
+        <div style={{ position: "relative", width: "100%" }}>
+            <div 
+                ref={scrollRef}
+                style={{ 
+                    display: "flex", 
+                    gap: "1.5rem", 
+                    overflowX: "auto", 
+                    padding: "1rem 0.5rem 2rem",
+                    scrollbarWidth: "none", // Firefox
+                    msOverflowStyle: "none",  // IE 10+
+                    WebkitOverflowScrolling: "touch"
+                }}
+                className="hide-scrollbar"
+            >
+                <style>{`
+                    .hide-scrollbar::-webkit-scrollbar {
+                        display: none;
+                    }
+                `}</style>
+                {items.map((ach, i) => (
+                    <BadgeCard 
+                        key={ach.id} 
+                        ach={ach} 
+                        index={i} 
+                        isHovered={hoveredIndex === i}
+                        onHover={setHoveredIndex}
+                    />
+                ))}
+            </div>
+            
+            {/* Fade overlays */}
+            <div style={{
+                position: "absolute",
+                top: 0, left: 0, bottom: 0, width: 40,
+                background: `linear-gradient(to right, ${C.bg}, transparent)`,
+                pointerEvents: "none",
+                zIndex: 2
+            }} />
+            <div style={{
+                position: "absolute",
+                top: 0, right: 0, bottom: 0, width: 40,
+                background: `linear-gradient(to left, ${C.bg}, transparent)`,
+                pointerEvents: "none",
+                zIndex: 2
+            }} />
+        </div>
+    );
+}
+
+/* ---------- Spotlight card: more compact version ---------- */
 function SpotlightCard({ ach, index }) {
     const [failed, setFailed] = useState(false);
     const hasImg = ach.image && !failed;
@@ -219,15 +315,16 @@ function SpotlightCard({ ach, index }) {
                 borderRadius: 16,
                 overflow: "hidden",
                 display: "flex",
-                flexWrap: "wrap"
+                flexWrap: "wrap",
+                minHeight: 220
             }}
         >
             {/* Photo */}
             <div
                 style={{
                     position: "relative",
-                    flex: "1 1 340px",
-                    minHeight: 300,
+                    flex: "1 1 280px",
+                    minHeight: 200,
                     background: `radial-gradient(circle at 50% 50%, ${C.pinkGlow} 0%, transparent 70%), rgba(255,255,255,0.02)`,
                     display: "flex",
                     alignItems: "center",
@@ -243,7 +340,7 @@ function SpotlightCard({ ach, index }) {
                         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                     />
                 ) : (
-                    <StarFallback size={72} />
+                    <StarFallback size={60} />
                 )}
 
                 {/* Fade so the stamp stays readable */}
@@ -251,7 +348,7 @@ function SpotlightCard({ ach, index }) {
                     style={{
                         position: "absolute",
                         inset: 0,
-                        background: "linear-gradient(to top, rgba(10,10,20,0.85) 0%, rgba(10,10,20,0) 55%)",
+                        background: "linear-gradient(to top, rgba(10,10,20,0.8) 0%, rgba(10,10,20,0) 60%)",
                         pointerEvents: "none"
                     }}
                 />
@@ -260,15 +357,15 @@ function SpotlightCard({ ach, index }) {
                     <div
                         style={{
                             position: "absolute",
-                            left: 20,
-                            bottom: 14,
+                            left: 16,
+                            bottom: 10,
                             fontFamily: C.mono,
                             fontWeight: 800,
-                            fontSize: "clamp(2.6rem, 6vw, 4.2rem)",
+                            fontSize: "clamp(2rem, 5vw, 3rem)",
                             lineHeight: 1,
                             letterSpacing: "-0.02em",
                             color: "transparent",
-                            WebkitTextStroke: `2px ${C.pink}`
+                            WebkitTextStroke: `1.5px ${C.pink}`
                         }}
                     >
                         {ach.rank}
@@ -279,18 +376,18 @@ function SpotlightCard({ ach, index }) {
             {/* Text */}
             <div
                 style={{
-                    flex: "1 1 340px",
-                    padding: "2rem",
+                    flex: "2 1 340px",
+                    padding: "1.25rem 1.5rem",
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
-                    gap: "0.9rem"
+                    gap: "0.6rem"
                 }}
             >
-                <div style={{ fontFamily: C.mono, fontSize: "0.75rem", color: C.textDim }}>{ach.date}</div>
-                <h3 style={{ fontFamily: C.mono, fontSize: "1.35rem", color: C.pink, margin: 0, lineHeight: 1.3 }}>{ach.title}</h3>
-                <p style={{ fontSize: "0.92rem", color: C.textMuted, lineHeight: 1.65, margin: 0 }}>{ach.description}</p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginTop: "0.3rem" }}>
+                <div style={{ fontFamily: C.mono, fontSize: "0.7rem", color: C.textDim }}>{ach.date}</div>
+                <h3 style={{ fontFamily: C.mono, fontSize: "1.1rem", color: C.pink, margin: 0, lineHeight: 1.3 }}>{ach.title}</h3>
+                <p style={{ fontSize: "0.85rem", color: C.textMuted, lineHeight: 1.55, margin: 0 }}>{ach.description}</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", marginTop: "0.2rem" }}>
                     {ach.skills.map((s) => (
                         <Chip key={s}>{s}</Chip>
                     ))}
@@ -305,7 +402,7 @@ export default function Achievements() {
     return (
         <section
             id="Achievements"
-            style={{ padding: "clamp(4rem, 8vw, 6rem) clamp(1.25rem, 5vw, 3rem)", position: "relative", zIndex: 1 }}
+            style={{ padding: "clamp(2rem, 5vw, 4rem) clamp(1.25rem, 5vw, 3rem)", position: "relative", zIndex: 1 }}
         >
             <div style={{ maxWidth: 1200, margin: "0 auto" }}>
                 <SectionHeading
@@ -318,7 +415,7 @@ export default function Achievements() {
                     command="$ cd ~/achievements && ls -F"
                 />
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "4.5rem" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
                     {Object.entries(CATEGORIES).map(([key, cat]) => {
                         const isBadge = key === "badges";
                         return (
@@ -341,18 +438,8 @@ export default function Achievements() {
 
                                 {isBadge ? (
                                     <>
-                                        <div
-                                            style={{
-                                                display: "grid",
-                                                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 250px), 1fr))",
-                                                gap: "1.25rem"
-                                            }}
-                                        >
-                                        {cat.items.map((ach, i) => (
-                                            <BadgeCard key={ach.id} ach={ach} index={i} />
-                                        ))}
-                                    </div>
-                                    <div style={{ textAlign: "center", marginTop: "1.5rem" }}>
+                                        <BadgeSlider items={cat.items} />
+                                        <div style={{ textAlign: "center", marginTop: "1rem" }}>
                                         <a
                                             href="https://www.credly.com/users/sreng-sopheakanha"
                                             target="_blank"

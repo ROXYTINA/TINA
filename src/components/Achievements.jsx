@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { C } from "../theme";
 import { SectionHeading } from "./UI";
 import { motion, AnimatePresence } from "framer-motion";
@@ -151,7 +151,7 @@ function FloatingBadge({ badge, index }) {
           flexDirection: "column",
           alignItems: "center",
           textAlign: "center",
-          padding: "1.25rem 1rem",
+          padding: "1.35rem 1rem 1.15rem",
           borderRadius: 20,
           background: isHovered
             ? "rgba(26, 26, 46, 0.85)"
@@ -174,14 +174,14 @@ function FloatingBadge({ badge, index }) {
         <div
           style={{
             position: "absolute",
-            top: "20%",
+            top: "24%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 90,
-            height: 90,
+            width: 115,
+            height: 115,
             borderRadius: "50%",
-            background: isHovered ? C.pinkGlow : "rgba(255, 110, 180, 0.04)",
-            filter: "blur(20px)",
+            background: isHovered ? C.pinkGlow : `${badge.color}18`,
+            filter: "blur(22px)",
             pointerEvents: "none",
             transition: "all 0.3s ease"
           }}
@@ -191,8 +191,8 @@ function FloatingBadge({ badge, index }) {
         <div
           style={{
             position: "relative",
-            width: 95,
-            height: 95,
+            width: 120,
+            height: 120,
             marginBottom: "0.85rem",
             display: "flex",
             alignItems: "center",
@@ -207,11 +207,12 @@ function FloatingBadge({ badge, index }) {
               width: "100%",
               height: "100%",
               objectFit: "contain",
+              scale: 1.38,
               filter: isHovered
-                ? "drop-shadow(0 10px 18px rgba(0,0,0,0.6))"
-                : "drop-shadow(0 4px 10px rgba(0,0,0,0.4))"
+                ? "drop-shadow(0 12px 20px rgba(0,0,0,0.65))"
+                : "drop-shadow(0 5px 12px rgba(0,0,0,0.45))"
             }}
-            animate={isHovered ? { scale: 1.1 } : { scale: 1 }}
+            animate={isHovered ? { scale: 1.48 } : { scale: 1.38 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           />
         </div>
@@ -220,20 +221,20 @@ function FloatingBadge({ badge, index }) {
         <div
           style={{
             fontFamily: C.mono,
-            fontSize: "0.62rem",
+            fontSize: "0.64rem",
             color: badge.color,
             background: "rgba(0,0,0,0.35)",
-            border: `1px solid ${badge.color}35`,
+            border: `1px solid ${badge.color}40`,
             borderRadius: 12,
             padding: "2px 8px",
-            marginBottom: "0.45rem",
+            marginBottom: "0.5rem",
             display: "inline-flex",
             alignItems: "center",
             gap: 4
           }}
         >
-          {badge.provider === "AWS" ? <FaAws size={11} /> : <FaGoogle size={10} />}
-          <span>{badge.provider}</span>
+          {badge.provider === "AWS" ? <FaAws size={12} /> : <FaGoogle size={11} />}
+          <span style={{ fontWeight: 600 }}>{badge.provider}</span>
           <span style={{ color: C.textDim }}>•</span>
           <span style={{ color: C.textDim }}>{badge.date}</span>
         </div>
@@ -242,8 +243,8 @@ function FloatingBadge({ badge, index }) {
         <h4
           style={{
             fontFamily: C.mono,
-            fontSize: "0.82rem",
-            fontWeight: 600,
+            fontSize: "0.86rem",
+            fontWeight: 700,
             color: isHovered ? C.white : C.pink,
             margin: "0 0 0.3rem 0",
             lineHeight: 1.3,
@@ -257,7 +258,7 @@ function FloatingBadge({ badge, index }) {
         <p
           style={{
             fontFamily: C.mono,
-            fontSize: "0.68rem",
+            fontSize: "0.7rem",
             color: C.textMuted,
             margin: 0,
             lineHeight: 1.35
@@ -277,7 +278,8 @@ function FloatingBadge({ badge, index }) {
             color: C.pink,
             display: "inline-flex",
             alignItems: "center",
-            gap: 4
+            gap: 4,
+            fontWeight: 600
           }}
         >
           <span>Verify on Credly</span>
@@ -288,7 +290,7 @@ function FloatingBadge({ badge, index }) {
       {/* Floating shadow beneath */}
       <div
         style={{
-          width: "70%",
+          width: "72%",
           height: 8,
           margin: "8px auto 0",
           borderRadius: "50%",
@@ -302,6 +304,16 @@ function FloatingBadge({ badge, index }) {
 
 export default function Achievements() {
   const [photoOpen, setPhotoOpen] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") setPhotoOpen(false);
+    };
+    if (photoOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+      return () => window.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [photoOpen]);
 
   return (
     <section
@@ -387,7 +399,7 @@ export default function Achievements() {
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fill, minmax(190px, 1fr))",
-              gap: "1.5rem 1.25rem",
+              gap: "1.75rem 1.35rem",
               alignItems: "start"
             }}
           >
